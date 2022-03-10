@@ -8,13 +8,13 @@
 ## 🚀 Links <Projeto hotel>
 
 Figma:
-```
+
 [Acessar Figma](https://www.figma.com/file/Nsb9YU2nld7FcM9pu1HRrK/Backup-10_03_22?node-id=0%3A1).
-```
+
 ClickUp:
-```
+
 [Acessar ClickUp](https://app.clickup.com/31004271/v/l/xj5kf-4443?pr=49149528).
-```
+
 
 ## 🤝 Colaboradores
 
