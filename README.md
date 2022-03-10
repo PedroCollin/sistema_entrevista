@@ -5,48 +5,16 @@
 
 <!-- <img src="imgsReadme/home.png" alt="Home"> -->
 
-> Links
+## 🚀 Links <Projeto hotel>
 
-## 🚀 Instalando <Projeto hotel>
-
-Para instalar o projeto_hotel, siga estas etapas:
-
-Linux e macOS:
+Figma:
 ```
-sudo git clone <link do projeto>
-instale o MySQL na maquina e importe o banco 
-Tenha as bibiotecas Django, PyMySQL
-rode no terminal python manage.py runserver
+<a href="https://www.figma.com/file/Nsb9YU2nld7FcM9pu1HRrK/Backup-10_03_22?node-id=0%3A1">
 ```
-<comando_de_instalação>
+ClickUp:
 ```
-pip instatll django
-pip install PyMySQL
+<a href="https://app.clickup.com/31004271/v/l/xj5kf-4443?pr=49149528">
 ```
-Windows:
-```
-sudo git clone <link do projeto>
-instale o MySQL na maquina e importe o banco 
-Tenha as bibiotecas Django, PyMySQL
-rode no terminal python manage.py runserver
-```
-<comando_de_instalação>
-```
-pip instatll django
-pip install PyMySQL
-```
-
-## 📫 Contribuindo para Projeto Hotel
-<!---Caso você queira colaborar com algo que possa ser benéfico/diferenete/novo siga as instruções abaixo--->
-Para contribuir com Projeto_hotel, siga estas etapas:
-
-1. Bifurque este repositório.
-2. Crie um branch: `git checkout -b <nome_branch>`.
-3. Faça suas alterações e confirme-as: `git commit -m '<mensagem_commit>'`
-4. Envie para o branch original: `git push origin <nome_do_projeto> / <local>`
-5. Crie a solicitação de pull.
-
-Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
 ## 🤝 Colaboradores
 
@@ -85,4 +53,4 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 
 Esse projeto está sob licença.
 
-[⬆ Voltar ao topo](#nome-do-projeto)<br>
+[⬆ Voltar ao topo](#sistema_entrevista)<br>
