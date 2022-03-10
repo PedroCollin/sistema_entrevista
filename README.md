@@ -9,7 +9,7 @@
 
 Figma:
 
-[Acessar Figma](https://www.figma.com/file/Nsb9YU2nld7FcM9pu1HRrK/Backup-10_03_22?node-id=0%3A1).
+[Acessar Figma](https://www.figma.com/file/INSXHlvjPOv83yP7595ydh/Projeto-Processo-Seletivo?node-id=0%3A1).
 
 ClickUp:
 
