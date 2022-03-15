@@ -17,7 +17,7 @@ class signUp(APIView):
 class signIn(APIView):
     def post(self, request):
         email = request.data['email']
-        senha = request.data['senha']
+        senha = request.data['password']
         user = User.objects.filter(email=email).first()
         if user is None:
             raise AuthenticationFailed('Usuario não encontrado!')
