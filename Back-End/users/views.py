@@ -6,13 +6,35 @@ from .serializers import UserSerializer
 from .models import User
 import jwt, datetime
 
+from rest_framework.permissions import IsAuthenticated
+
+
 # Create your views here.
 class signUp(APIView):
+
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        token = request.headers['Authorization']
+        print(token)
+        if not token:
+            raise AuthenticationFailed('Deslogado!')
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            user = User.objects.filter(id=payload['id']).first()
+            print(payload)
+            print(user)
+            if not user:
+                print("erro")
+                raise AuthenticationFailed('usuario não encontrado!!')
+
+            else:
+                serializer = UserSerializer(data=request.data)
+                print(request.data)
+                print(serializer)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(serializer.data)
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Deslogado!')
 
 class signIn(APIView):
     def post(self, request):
@@ -39,6 +61,8 @@ class signIn(APIView):
         response.data = ({
             'jwt': token
         })
+        print(response)
+        print(response.data)
         return response
 
 class UserView(APIView):
