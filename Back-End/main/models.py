@@ -35,26 +35,22 @@ class Candidato(models.Model):
     rg = models.CharField(max_length=10)
     cpf = CPFField('Cpf')
     cidade = models.ForeignKey(Cidade, related_name="fk_id_cidade", on_delete=models.CASCADE)
+    observacao = models.TextField(max_length=255)
 
 class AprovacaoDinamica(models.Model):
-    Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
     Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
     Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
 
-class ObservacaoGeral(models.Model):
-    Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
-    Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
-    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
-    Observacao = models.TextField(max_length=255)
 
 class Entrevista(models.Model):
-    Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
     Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
     Date = models.DateField(auto_now_add=False)
+    observacao = models.TextField(max_length=255)
+    entrevista = models.ForeignKey(StatusEntrevista, related_name="fk_status_entrevista", on_delete=models.CASCADE)
 
-class AprovacaoEntrevista(models.Model):
-    Entrevista = models.ForeignKey(Entrevista, related_name="fk_id_entrevista", on_delete=models.CASCADE)
-    DataAprovacao = models.DateField(auto_now_add=False)
+class StatusEntrevista(models.Model):
+    entrevista = models.ForeignKey(Entrevista, related_name="fk_id_entrevista", on_delete=models.CASCADE)
+    dataAprovacao = models.DateField(auto_now_add=False)
 
 class Vaga(models.Model):
     Curso = models.ForeignKey(Curso, related_name="fk_id_curso", on_delete=models.CASCADE)
@@ -66,6 +62,7 @@ class Vaga(models.Model):
 class VagaDinamica(models.Model):
     Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
     Dinamica = models.ForeignKey(Dinamica, related_name="fk_id_dinamica", on_delete=models.CASCADE)
+    Status = models.CharField(max_length=30)
 
 class RespostaDinamica(models.Model):
     VagaDinamica = models.ForeignKey(VagaDinamica, related_name="fk_id_vagaDinamica", on_delete=models.CASCADE)
@@ -74,6 +71,13 @@ class RespostaDinamica(models.Model):
     AvaliacaoDinamica = models.ForeignKey(AvaliacaoDinamica, related_name="fk_id_avaliacaoDinamica", on_delete=models.CASCADE)
     Candidato = models.ForeignKey(Candidato, related_name="fk_candidato", on_delete=models.CASCADE)
     Nota = models.IntegerField(blank=True)
+
+class ListaDinamica(models.Model):
+    idDinamica = models.ForeignKey(RespostaDinamica, related_name="fk_id_respostaDinamica", on_delete=models.CASCADE)
+    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
+    criterio = models.CharField(max_length=255)
+    notaCriterio = models.IntegerField()
+    
 
 class AvaliacaoDinamica(models.Model):
     Dinamica = models.ForeignKey(Dinamica, related_name="fk_id_dinamica", on_delete=models.CASCADE)

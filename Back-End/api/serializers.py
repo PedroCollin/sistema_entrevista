@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from soupsieve import select
 from main import models
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -46,9 +47,9 @@ class EntrevistaSerializer(serializers.ModelSerializer):
         models = models.Entrevista
         fields = '__all__'
 
-class AprovacaoEntrevistaSerializer(serializers.ModelSerializer):
+class StatusEntrevistaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.AprovacaoEntrevista
+        models = models.StatusEntrevista
         fields = '__all__'
 
 class VagaSerializer(serializers.ModelSerializer):
@@ -57,16 +58,27 @@ class VagaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VagaDinamicaSerializer(serializers.ModelSerializer):
+
     class Meta:
         models = models.VagaDinamica
         fields = '__all__'
 
-class RespostaDinamicaSerializer(serializers.ModelSerializer):
-    class Meta:
-        models = models.RespostaDinamica
-        fields = '__all__'
 
 class AvaliacaoDinamicaSerializer(serializers.ModelSerializer):
     class Meta:
         models = models.AvaliacaoDinamica
+        fields = '__all__'
+
+class ListaDinamicaSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = models.ListaDinamica
+        fields = '__all__'
+
+
+class RespostaDinamicaSerializer(serializers.ModelSerializer):
+    criterio = ListaDinamicaSerializer(read_only=True) 
+    notaCriterio = ListaDinamicaSerializer(read_only=True) 
+
+    class Meta:
+        models = models.RespostaDinamica
         fields = '__all__'
