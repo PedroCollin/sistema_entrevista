@@ -41,16 +41,15 @@ class AprovacaoDinamica(models.Model):
     Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
     Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
 
+class StatusEntrevista(models.Model):
+    entrevista = models.ForeignKey(Entrevista, related_name="fk_id_entrevista", on_delete=models.CASCADE)
+    dataAprovacao = models.DateField(auto_now_add=False)
 
 class Entrevista(models.Model):
     Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
     Date = models.DateField(auto_now_add=False)
     observacao = models.TextField(max_length=255)
     entrevista = models.ForeignKey(StatusEntrevista, related_name="fk_status_entrevista", on_delete=models.CASCADE)
-
-class StatusEntrevista(models.Model):
-    entrevista = models.ForeignKey(Entrevista, related_name="fk_id_entrevista", on_delete=models.CASCADE)
-    dataAprovacao = models.DateField(auto_now_add=False)
 
 class Vaga(models.Model):
     Curso = models.ForeignKey(Curso, related_name="fk_id_curso", on_delete=models.CASCADE)
