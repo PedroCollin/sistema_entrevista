@@ -39,6 +39,14 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       </a>
     </td>
     <td align="center">
+      <a href="https://github.com/ElielPimenta">
+        <img src="https://avatars.githubusercontent.com/u/86831916?v=4" width="100px;" alt=""/><br>
+        <sub>
+          <b>Eliel Pimenta</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
       <a href="https://github.com/Marcos-VNC">
         <img src="https://avatars.githubusercontent.com/u/75021765?s=400&u=7fe48327781a8621cd86f3b4f11f8700107c4e8c&v=4" width="100px;" alt=""/><br>
         <sub>
