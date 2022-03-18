@@ -1,89 +1,86 @@
-import django
+from enum import auto
+from platform import release
+from black import mask_cell
 from django.db import models
-import datetime
 from users.models import User
-
+from uuid import uuid4
+from cpf_field.models import CPFField
 
 class Curso(models.Model):
-    titulo = models.CharField(max_length=100)
-    desc = models.CharField(max_length=255, null=True, blank=True)
-    duracao = models.CharField(max_length=50)
+    titulo = models.CharField(max_length=255)
+    descricao = models.TextField(max_length=255)
+    data_inicio = models.DateField(auto_now_add=False)
+    data_termino = models.DateField(auto_now_add=False)
 
-    def __str__(self):
-        return self.id
+class StatusVaga(models.Model):
+    status = models.CharField(max_length=30)
 
-class Candidato(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.EmailField(max_length=255)
-    rg = models.IntegerField()
-    cff = models.IntegerField()
-    cidade = models.CharField(max_length=100)
-    status = models.CharField(max_length=15, default='1',
-                               choices=(('1', 'Dinâmica'),
-                                        ('2', 'Entrevista'),
-                                        ('3', 'Pré-Aprovado')))
+class Usuario(models.Model):
+    nome = models.CharField(max_length=30)
+    edv = models.CharField(max_length=10)
+    email = models.EmailField(max_length=254)
+    senha = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.id
+class Cidade(models.Model):
+    nome = models.CharField(max_length=30)
 
 class Dinamica(models.Model):
-    titulo = models.CharField(max_length=100)
-    desc = models.EmailField(max_length=255)
-    duracao = models.TimeField()
+    titulo = models.CharField(max_length=255)
+    descicao = models.TextField(max_length=255)
+    duracao = models.TimeField(blank=True)
 
-    def __str__(self):
-        return self.id
+class Candidato(models.Model):
+    nome = models.CharField(max_length=30)
+    email = models.EmailField(max_length=254)
+    rg = models.CharField(max_length=10)
+    cpf = CPFField('Cpf')
+    cidade = models.ForeignKey(Cidade, related_name="fk_id_cidade", on_delete=models.CASCADE)
+    observacao = models.TextField(max_length=255)
 
-class Avaliacao_Dinamica(models.Model):
-    fk_id_dinamica = models.ForeignKey(Dinamica, on_delete=models.CASCADE, null=True)
-    item_de_avaliacao = models.CharField(max_length=255)
+class AprovacaoDinamica(models.Model):
+    Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
+    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
 
+class StatusEntrevista(models.Model):
+    entrevista = models.ForeignKey(Entrevista, related_name="fk_id_entrevista", on_delete=models.CASCADE)
+    dataAprovacao = models.DateField(auto_now_add=False)
 
-    def __str__(self):
-        return self.id
+class Entrevista(models.Model):
+    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
+    Date = models.DateField(auto_now_add=False)
+    observacao = models.TextField(max_length=255)
+    entrevista = models.ForeignKey(StatusEntrevista, related_name="fk_status_entrevista", on_delete=models.CASCADE)
 
 class Vaga(models.Model):
-    fk_id_curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
-    quant_vaga = models.IntegerField()
-    dataInicio = models.DateTimeField(default=datetime.datetime.now())
-    dataFechamento = models.DateTimeField(null=True, default=datetime.datetime.now())
+    Curso = models.ForeignKey(Curso, related_name="fk_id_curso", on_delete=models.CASCADE)
+    StatusVaga = models.ForeignKey(StatusVaga, related_name="fk_id_status", on_delete=models.CASCADE)
+    QuantidadeVaga = models.IntegerField(blank=True)
+    DataAbertura = models.DateField(auto_now_add=False)
+    DataFechamento = models.DateField(auto_now_add=False)
 
-    def __str__(self):
-        return self.id
+class VagaDinamica(models.Model):
+    Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
+    Dinamica = models.ForeignKey(Dinamica, related_name="fk_id_dinamica", on_delete=models.CASCADE)
+    Status = models.CharField(max_length=30)
 
-class Vaga_Dinamica(models.Model):
-    fk_id_vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, null=True)
-    fk_id_dinamica = models.ForeignKey(Dinamica, on_delete=models.CASCADE, null=True)
+class RespostaDinamica(models.Model):
+    VagaDinamica = models.ForeignKey(VagaDinamica, related_name="fk_id_vagaDinamica", on_delete=models.CASCADE)
+    Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
+    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
+    AvaliacaoDinamica = models.ForeignKey(AvaliacaoDinamica, related_name="fk_id_avaliacaoDinamica", on_delete=models.CASCADE)
+    Candidato = models.ForeignKey(Candidato, related_name="fk_candidato", on_delete=models.CASCADE)
+    Nota = models.IntegerField(blank=True)
 
+class ListaDinamica(models.Model):
+    idDinamica = models.ForeignKey(RespostaDinamica, related_name="fk_id_respostaDinamica", on_delete=models.CASCADE)
+    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
+    criterio = models.CharField(max_length=255)
+    notaCriterio = models.IntegerField()
+    
 
-    def __str__(self):
-        return self.id
+class AvaliacaoDinamica(models.Model):
+    Dinamica = models.ForeignKey(Dinamica, related_name="fk_id_dinamica", on_delete=models.CASCADE)
+    Criterio = models.CharField(max_length=20)
 
-class Resposta_Dinamica(models.Model):
-    fk_id_vaga_dinamica = models.ForeignKey(Vaga_Dinamica, on_delete=models.CASCADE, null=True)
-    fk_id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    fk_id_avaliacao_dinamica = models.ForeignKey(Avaliacao_Dinamica, on_delete=models.CASCADE, null=True)
-    fk_id_candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE, null=True)
-    resposta = models.CharField(max_length=255)
-
-
-    def __str__(self):
-        return self.id
-
-class Observacao_Geral(models.Model):
-    fk_id_vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, null=True)
-    fk_id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    fk_id_candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE, null=True)
-    observacao = models.TextField()
-
-
-    def __str__(self):
-        return self.id
-
-class Aprovacao(models.Model):
-    fk_id_vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE, null=True)
-    fk_id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    fk_id_candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return self.id
+    
+    
