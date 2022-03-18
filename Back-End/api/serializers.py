@@ -70,15 +70,14 @@ class AvaliacaoDinamicaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ListaDinamicaSerializer(serializers.ModelSerializer):
+    AvaliacaoDinamica = AvaliacaoDinamicaSerializer(read_only=True)
     class Meta:
         models = models.ListaDinamica
         fields = '__all__'
 
 
 class RespostaDinamicaSerializer(serializers.ModelSerializer):
-    criterio = ListaDinamicaSerializer(read_only=True) 
-    notaCriterio = ListaDinamicaSerializer(read_only=True) 
-
+    notaCriterio = ListaDinamicaSerializer(read_only=True)
     class Meta:
         models = models.RespostaDinamica
         fields = '__all__'
