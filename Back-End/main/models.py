@@ -9,6 +9,7 @@ from users.models import User
 from uuid import uuid4
 from cpf_field.models import CPFField
 
+
 class Curso(models.Model):
     titulo = models.CharField(max_length=255, blank=True)
     descricao = models.TextField(max_length=255, blank=True)
@@ -18,19 +19,16 @@ class Curso(models.Model):
 class StatusVaga(models.Model):
     status = models.CharField(max_length=30)
 
-class Usuario(models.Model):
-    nome = models.CharField(max_length=30)
-    edv = models.CharField(max_length=10)
-    email = models.EmailField(max_length=254)
-    senha = models.CharField(max_length=50)
-
 class Cidade(models.Model):
     nome = models.CharField(max_length=30)
 
 class Dinamica(models.Model):
     titulo = models.CharField(max_length=255)
-    descicao = models.TextField(max_length=255, blank=True)
+    descricao = models.TextField(max_length=255, blank=True)
     duracao = models.TimeField(blank=True)
+
+    def __str__(self):
+        return self.titulo
 
 class Candidato(models.Model):
     nome = models.CharField(max_length=30)
@@ -41,7 +39,7 @@ class Candidato(models.Model):
 
 
 class AprovacaoDinamica(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
 
 class StatusEntrevista(models.Model):
@@ -71,7 +69,7 @@ class AvaliacaoDinamica(models.Model):
 
 class RespostaDinamica(models.Model):
     vagaDinamica = models.ForeignKey(VagaDinamica, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
     list_criterios = jsonfield.JSONField(blank=True)
     nota = models.IntegerField(blank=True)
