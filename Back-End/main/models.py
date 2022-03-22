@@ -1,5 +1,8 @@
+import datetime
 from enum import auto
 from platform import release
+
+import jsonfield
 from black import mask_cell
 from django.db import models
 from users.models import User
@@ -7,10 +10,10 @@ from uuid import uuid4
 from cpf_field.models import CPFField
 
 class Curso(models.Model):
-    titulo = models.CharField(max_length=255)
-    descricao = models.TextField(max_length=255)
-    data_inicio = models.DateField(auto_now_add=False)
-    data_termino = models.DateField(auto_now_add=False)
+    titulo = models.CharField(max_length=255, blank=True)
+    descricao = models.TextField(max_length=255, blank=True)
+    data_inicio = models.DateField(auto_now_add=False, default=datetime.datetime.now())
+    data_termino = models.DateField(auto_now_add=False, default=datetime.datetime.now())
 
 class StatusVaga(models.Model):
     status = models.CharField(max_length=30)
@@ -26,56 +29,52 @@ class Cidade(models.Model):
 
 class Dinamica(models.Model):
     titulo = models.CharField(max_length=255)
-    descicao = models.TextField(max_length=255)
+    descicao = models.TextField(max_length=255, blank=True)
     duracao = models.TimeField(blank=True)
 
 class Candidato(models.Model):
     nome = models.CharField(max_length=30)
     email = models.EmailField(max_length=254)
     rg = models.CharField(max_length=10)
-    cpf = CPFField('Cpf')
-    cidade = models.ForeignKey(Cidade, related_name="fk_id_cidade", on_delete=models.CASCADE)
+    cpf = CPFField('Cpf', blank=True)
+    cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
 
 
 class AprovacaoDinamica(models.Model):
-    Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
-    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
 
 class StatusEntrevista(models.Model):
-    status = models.CharField()
+    status = models.CharField(max_length=255)
 
 class Entrevista(models.Model):
-    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
-    Date = models.DateField(auto_now_add=False)
+    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=False)
     observacao = models.TextField(max_length=255)
-    status = models.ForeignKey(StatusEntrevista, related_name="fk_status_entrevista", on_delete=models.CASCADE)
+    status = models.ForeignKey(StatusEntrevista, on_delete=models.CASCADE)
 
 class Vaga(models.Model):
-    Curso = models.ForeignKey(Curso, related_name="fk_id_curso", on_delete=models.CASCADE)
-    StatusVaga = models.ForeignKey(StatusVaga, related_name="fk_id_status", on_delete=models.CASCADE)
-    QuantidadeVaga = models.IntegerField(blank=True)
-    DataAbertura = models.DateField(auto_now_add=False)
-    DataFechamento = models.DateField(auto_now_add=False)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    statusVaga = models.ForeignKey(StatusVaga, on_delete=models.CASCADE)
+    quantidadeVaga = models.IntegerField(blank=True)
+    dataAbertura = models.DateField(auto_now_add=False)
+    dataFechamento = models.DateField(auto_now_add=False)
 
 class VagaDinamica(models.Model):
-    Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
-    Dinamica = models.ForeignKey(Dinamica, related_name="fk_id_dinamica", on_delete=models.CASCADE)
-    Status = models.CharField(max_length=30)
+    vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)
+    dinamica = models.ForeignKey(Dinamica, on_delete=models.CASCADE)
 
 class AvaliacaoDinamica(models.Model):
-    Dinamica = models.ForeignKey(Dinamica, related_name="fk_id_dinamica", on_delete=models.CASCADE)
-    Criterio = models.CharField(max_length=50)
-    Peso = models.IntegerField(blank=True)
+    dinamica = models.ForeignKey(Dinamica, on_delete=models.CASCADE)
+    criterio = models.CharField(max_length=50, blank=True)
+    peso = models.IntegerField(blank=True)
 
 class RespostaDinamica(models.Model):
-    VagaDinamica = models.ForeignKey(VagaDinamica, related_name="fk_id_vagaDinamica", on_delete=models.CASCADE)
-    Usuario = models.ForeignKey(Usuario, related_name="fk_id_usuario", on_delete=models.CASCADE)
-    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
-    Nota = models.IntegerField(blank=True)
-    observacao = models.TextField()
+    vagaDinamica = models.ForeignKey(VagaDinamica, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
+    list_criterios = jsonfield.JSONField(blank=True)
+    nota = models.IntegerField(blank=True)
+    observacao = models.TextField(blank=True)
 
-class ListaDinamica(models.Model):
-    AvaliacaoDinamica = models.ForeignKey(AvaliacaoDinamica, related_name="fk_id_avaliacaoDinamica", on_delete=models.CASCADE)
-    Candidato = models.ForeignKey(Candidato, related_name="fk_id_candidato", on_delete=models.CASCADE)
-    Vaga = models.ForeignKey(Vaga, related_name="fk_id_vaga", on_delete=models.CASCADE)
-    notaCriterio = models.IntegerField()
+
