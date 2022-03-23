@@ -31,6 +31,7 @@ admin.site.register(Curso)
 admin.site.register(StatusVaga)
 admin.site.register(Dinamica)
 admin.site.register(Cidade)
+admin.site.register(Candidato)
 
 admin.site.register(AprovacaoDinamica)
 admin.site.register(StatusEntrevista)
