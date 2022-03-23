@@ -1,83 +1,67 @@
 from rest_framework import serializers
-from soupsieve import select
-from main import models
+from .models import *
+from .models import Dinamica
 
-class UsuarioSerializer(serializers.ModelSerializer):
-    class Meta:
-        models = models.Usuario
-        fields = '__all__'
+
 
 class StatusVagaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.StatusVaga
+        model = StatusVaga
         fields = '__all__'
 
 class CursoSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Curso
+        model = Curso
         fields = '__all__'
 
 class CidadeSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Cidade
+        model = Cidade
         fields = '__all__'
 
 class DinamicaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Dinamica
+        model = Dinamica
         fields = '__all__'
 
 class CandidatoSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Candidato
+        model = Candidato
         fields = '__all__'
 
 class AprovacaoDinamicaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.AprovacaoDinamica
-        fields = '__all__'
-
-class ObservacaoGeralSerializer(serializers.ModelSerializer):
-    class Meta:
-        models = models.ObservacaoGeral
+        model = AprovacaoDinamica
         fields = '__all__'
 
 class EntrevistaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Entrevista
+        model = Entrevista
         fields = '__all__'
 
 class StatusEntrevistaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.StatusEntrevista
+        model = StatusEntrevista
         fields = '__all__'
 
 class VagaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.Vaga
+        model = Vaga
         fields = '__all__'
 
 class VagaDinamicaSerializer(serializers.ModelSerializer):
 
     class Meta:
-        models = models.VagaDinamica
+        model = VagaDinamica
         fields = '__all__'
 
 
 class AvaliacaoDinamicaSerializer(serializers.ModelSerializer):
     class Meta:
-        models = models.AvaliacaoDinamica
+        model = AvaliacaoDinamica
         fields = '__all__'
-
-class ListaDinamicaSerializer(serializers.ModelSerializer):
-    AvaliacaoDinamica = AvaliacaoDinamicaSerializer(read_only=True)
-    class Meta:
-        models = models.ListaDinamica
-        fields = '__all__'
-
 
 class RespostaDinamicaSerializer(serializers.ModelSerializer):
-    notaCriterio = ListaDinamicaSerializer(read_only=True)
     class Meta:
-        models = models.RespostaDinamica
+        model = RespostaDinamica
         fields = '__all__'
