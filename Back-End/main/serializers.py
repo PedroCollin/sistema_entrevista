@@ -50,7 +50,8 @@ class VagaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VagaDinamicaSerializer(serializers.ModelSerializer):
-
+    dinamica = DinamicaSerializer(read_only=True)
+    vaga = VagaSerializer(read_only=True)
     class Meta:
         model = VagaDinamica
         fields = '__all__'

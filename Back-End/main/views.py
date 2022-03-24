@@ -93,6 +93,139 @@ class Dinamica_API(APIView):
         _dinamica.delete()
         return Response({"msg": "Apagado com sucesso"})
 
+
+class Vaga_Dinamica_API(APIView):
+    """
+    API Cargos
+    """
+
+    # permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk=''):
+        if pk == '':
+            print('teste')
+            # _vagaDinamica = VagaDinamica.objects.all()
+            # dict_vagaDinamica = {}
+            # for vagaDinamica in _vagaDinamica:
+            #     _vaga = Vaga.objects.get(id=vagaDinamica.vaga.id)
+            #     serializer = VagaSerializer(_vaga)
+            #     _data = {}
+            #     _data = serializer.data
+            #     _vagaDinamica = VagaDinamica.objects.filter(vaga=_vaga.id)
+            #
+            #     print(_vagaDinamica)
+            #     dict_dinamicas = {}
+            #     for dinamica in _vagaDinamica:
+            #         print(dinamica)
+            #         _dinamica = Dinamica_API.get(self, request, pk=dinamica.id).data
+            #         print('DINAMICA: ' + str(_dinamica))
+            #         dict_dinamicas[_dinamica['id']] = _dinamica
+            #
+            #     _data['dinamica'] = dict_dinamicas
+            #     dict_vagaDinamica[vagaDinamica.id] = _data
+            # return Response(dict_vagaDinamica)
+        else:
+            _vaga = Vaga.objects.get(id=pk)
+            serializer = VagaSerializer(_vaga)
+            _data = {}
+            _data = serializer.data
+            _vagaDinamica = VagaDinamica.objects.filter(vaga=_vaga.id)
+
+            # print(_vagaDinamica)
+            dict_dinamicas = {}
+            for dinamica in _vagaDinamica:
+                # print(dinamica)
+                _dinamica = Dinamica_API.get(self, request, pk=dinamica.id).data
+                # print('DINAMICA: '+str(_dinamica))
+
+                try:
+                    print('teste')
+                    _respDinamica = RespostaDinamica.objects.filter(vagaDinamica=dinamica.id)
+                    print(len(_respDinamica))
+                    # for resp in _respDinamica:
+                    #     print(resp.list_criterios)
+
+                    _candidato = Candidato.objects.filter(vaga=_vaga.id)
+                    print(len(_candidato))
+
+                    if len(_respDinamica) == len(_candidato)-1:
+                        din_vaga_dinamica = VagaDinamica.objects.filter(vaga=_vaga.id, dinamica=dinamica.id)
+                        print(din_vaga_dinamica)
+                        dinamica.status = 'AOA'
+                        din_serializer = VagaDinamicaSerializer(din_vaga_dinamica, data=dinamica)
+                        din_serializer.is_valid(raise_exception=True)
+                        din_serializer.save()
+                        print('salvou')
+
+                except:
+                    pass
+
+                _dinamica['status'] = dinamica.status
+                dict_dinamicas[_dinamica['id']] = _dinamica
+
+            _data['dinamica'] = dict_dinamicas
+
+
+            return Response(_data)
+
+    def post(self, request):
+        serializer = DinamicaSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        dict_data = request.data[0]['lista_criterios']
+        _dinamica = Dinamica.objects.latest('id')
+
+        print(len(dict_data))
+        if len(dict_data) >= 5:
+            for criterio in dict_data:
+                dict_criterio = [{
+                    "dinamica": _dinamica.id,
+                    "criterio": criterio,
+                    "peso": dict_data[criterio]
+                }]
+
+                serializer = AvaliacaoDinamicaSerializer(data=dict_criterio, many=True)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+        else:
+            raise ValueError('Criterios insuficientes!!!')
+
+        return Response({"msg": "Inserido com sucesso"})
+        # return Response({"id": serializer.data['id']})
+
+    def put(self, request, pk=''):
+        _vagaDinamica = Dinamica.objects.get(id=pk)
+        serializer = DinamicaSerializer(_vagaDinamica, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        dict_data = request.data['lista_criterios']
+
+        print(len(dict_data))
+        if len(dict_data) >= 5:
+            for criterio in dict_data:
+                dict_criterio = {
+                    "dinamica": _vagaDinamica.id,
+                    "criterio": criterio,
+                    "peso": dict_data[criterio]
+                }
+
+                _avaliacao = AvaliacaoDinamica.objects.get(dinamica=_vagaDinamica.id, criterio=criterio)
+                serializer = AvaliacaoDinamicaSerializer(_avaliacao, data=dict_criterio)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+        else:
+            raise ValueError('Criterios insuficientes!!!')
+
+        return Response(serializer.data)
+
+    def delete(self, request, pk=''):
+        _dinamica = Dinamica.objects.get(id=pk)
+        _dinamica.delete()
+        return Response({"msg": "Apagado com sucesso"})
+
+
 class AvaliacaoDinamica_API(APIView):
     """
     API Cargos

@@ -40,12 +40,21 @@ class Dinamica(models.Model):
     def __str__(self):
         return self.titulo
 
+class Vaga(models.Model):
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    statusVaga = models.ForeignKey(StatusVaga, on_delete=models.CASCADE)
+    quantidadeVaga = models.IntegerField(blank=True)
+    dataAbertura = models.DateField(auto_now_add=False)
+    dataFechamento = models.DateField(auto_now_add=False)
+
+
 class Candidato(models.Model):
     nome = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
     rg = models.CharField(max_length=10)
     cpf = CPFField('Cpf', blank=True)
     cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
+    vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
@@ -72,20 +81,12 @@ class Entrevista(models.Model):
     def __str__(self):
         return self.candidato
 
-class Vaga(models.Model):
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    statusVaga = models.ForeignKey(StatusVaga, on_delete=models.CASCADE)
-    quantidadeVaga = models.IntegerField(blank=True)
-    dataAbertura = models.DateField(auto_now_add=False)
-    dataFechamento = models.DateField(auto_now_add=False)
 
-    def __str__(self):
-        return self.curso
 
 class VagaDinamica(models.Model):
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)
     dinamica = models.ForeignKey(Dinamica, on_delete=models.CASCADE)
-
+    status = models.CharField(max_length=50, blank=True)
 
 
 class AvaliacaoDinamica(models.Model):
@@ -93,8 +94,7 @@ class AvaliacaoDinamica(models.Model):
     criterio = models.CharField(max_length=50, blank=True)
     peso = models.IntegerField(blank=True)
 
-    def __str__(self):
-        return self.dinamica
+
 
 class RespostaDinamica(models.Model):
     vagaDinamica = models.ForeignKey(VagaDinamica, on_delete=models.CASCADE)
@@ -104,7 +104,6 @@ class RespostaDinamica(models.Model):
     nota = models.IntegerField(blank=True)
     observacao = models.TextField(blank=True)
 
-    def __str__(self):
-        return self.candidato
+
 
 
