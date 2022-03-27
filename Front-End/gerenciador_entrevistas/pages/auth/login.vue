@@ -1,33 +1,64 @@
 <template>
-  <div class="cen">
-    <form class="form" @submit.prevent="enviarLogin">
-      <div class="mb-4">
-        <label for="edv"> Email </label>
-        <input id="email" type="text" placeholder="Email" v-model="email" />
-      </div>
-      <div class="mb-6">
-        <label for="password"> Senha </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="******************"
-          v-model="senha"
-        />
-        <button type="submit">Login</button>
+  <div class="master">
+    <div class="container">
+      <div class="forms">
+        <div class="form login">
+          <span class="title">Login</span>
 
-        <p class="edit-p">
-          não tem uma conta?
-          <a href="../../auth/register">Cadastrar</a>
-          <nuxt-link to="/">home</nuxt-link>
-        </p>
+          <form @submit.prevent="enviarLogin">
+            <div class="input-field">
+              <input
+                type="text"
+                placeholder="Entre com seu e-mail"
+                v-model="email"
+                required
+              />
+              <i class="uil uil-envelope icon"></i>
+            </div>
+            <div class="input-field">
+              <input
+                type="password"
+                class="password"
+                placeholder="Entre com sua senha"
+                v-model="senha"
+                required
+              />
+              <i class="uil uil-lock icon"></i>
+              <i class="uil uil-eye-slash showHidePw"></i>
+            </div>
+
+            <div class="checkbox-text">
+              <div class="checkbox-content">
+                <input type="checkbox" id="logCheck" />
+                <label for="logCheck" class="text">lembrar-me</label>
+              </div>
+
+              <a href="#" class="text">Esqueceu sua senha?</a>
+            </div>
+
+            <div class="input-field button">
+              <input type="submit" value="Login" />
+            </div>
+          </form>
+
+          <div class="login-signup">
+            <span class="text"
+              >Não tem cadastro?
+              <a href="../../auth/register" class="text signup-link"
+                >Registrar-se</a
+              >
+            </span>
+          </div>
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -47,7 +78,7 @@ export default {
         }),
       });
       const token = await responseToken.json();
-      console.log(token.jwt)
+      console.log(token.jwt);
       try {
         const response = await fetch("http://127.0.0.1:8000/api/user/", {
           headers: { "Content-Type": "application/json" },
@@ -77,11 +108,5 @@ export default {
 };
 </script>
 
-<style>
-.cen {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-}
+<style scoped src="@/static/auth/login.css">
 </style>

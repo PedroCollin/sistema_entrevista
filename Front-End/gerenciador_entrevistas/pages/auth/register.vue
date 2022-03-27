@@ -1,41 +1,50 @@
 <template>
-  <div class="cen">
-    <div v-if="auth">
-        <h1>Você esta Logado!</h1>
+  <div class="master">
+    <div class="wrapper">
+      <h2>Cadastro</h2>
+      <form @submit.prevent="enviarRegister">
+        <div class="input-box">
+          <input
+            type="text"
+            placeholder="Entre com seu nome completo"
+            v-model="nome"
+            required
+          />
+        </div>
+        <div class="input-box">
+          <input
+            type="number"
+            placeholder="Entre com seu EDV"
+            v-model="edv"
+            required
+          />
+        </div>
+        <div class="input-box">
+          <input
+            type="email"
+            placeholder="Enter com seu e-mail"
+            v-model="email"
+            required
+          />
+        </div>
+        <div class="input-box">
+          <input
+            type="password"
+            placeholder="Entre com sua senha"
+            v-model="password"
+            required
+          />
+        </div>
+        <div class="input-box button">
+          <input type="Submit" value="Cadastrar" />
+        </div>
+        <div class="text">
+          <h3>
+            Já tem uma conta? <a href="../auth/login">Efetuar login</a>
+          </h3>
+        </div>
+      </form>
     </div>
-    <form class="form" @submit.prevent="enviarRegister">
-      <div class="mb-4">
-        <label for="nome"> Nome </label>
-        <input
-          id="nome"
-          type="text"
-          placeholder="Nome completo"
-          v-model="nome"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="edv"> Edv </label>
-        <input id="edv" type="text" placeholder="EDV" v-model="edv" />
-      </div>
-      <div class="mb-4">
-        <label for="email"> Email </label>
-        <input id="email" type="text" placeholder="Email" v-model="email" />
-      </div>
-      <div class="mb-6">
-        <label for="password"> Senha </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="******************"
-          v-model="senha"
-        />
-        <button type="submit">Cadastrar</button>
-
-        <p class="edit-p">
-          <nuxt-link to="/">home</nuxt-link>
-        </p>
-      </div>
-    </form>
   </div>
 </template>
 
@@ -56,7 +65,7 @@ export default {
   created() {
     if (this.$store.state.user_session.id != null) {
       this.auth = true;
-    } 
+    }
     // else {
     //   this.$router.push("/auth/login/");
     // }
@@ -84,11 +93,5 @@ export default {
 };
 </script>
 
-<style>
-.cen {
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-}
+<style scoped src="@/static/auth/register.css">
 </style>
