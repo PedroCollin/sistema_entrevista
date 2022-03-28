@@ -45,6 +45,8 @@ class StatusEntrevistaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VagaSerializer(serializers.ModelSerializer):
+    curso = CursoSerializer(read_only=True)
+    statusVaga = StatusVagaSerializer(read_only=True)
     class Meta:
         model = Vaga
         fields = '__all__'

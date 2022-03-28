@@ -113,4 +113,63 @@ class AvaliacaoDinamica_API(APIView):
             serializer = AvaliacaoDinamicaSerializer(_avaliacao)
             return Response(serializer.data)
 
+class Vaga(APIView):
+    def get(self, request, pk=''):
+        if pk == '':
+            _vaga = Vaga.objects.all()
+            serializer = VagaSerializer(_vaga, many=True)
+            return Response(serializer.data)
+        else:
+            _vaga = Vaga.objects.get(id=pk)
+            serializer = VagaSerializer(_vaga)
+            return Response(serializer.data)
 
+    def post(self, request):
+        serializer = VagaSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"msg": "Inserido com sucesso"})
+        #return Response({"id": serializer.data['id']})
+
+    def put(self, request, pk=''):
+        vaga = Vaga.objects.get(id=pk)
+        serializer = VagaSerializer(vaga, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk=''):
+        vaga = Vaga.objects.get(id=pk)
+        vaga.delete()
+        return Response({"msg": "Apagado com sucesso"})
+
+
+class Candidato(APIView):
+    def get(self, request, pk=''):
+        if pk == '':
+            _candidato = Candidato.objects.all()
+            serializer = CandidatoSerializer(_candidato, many=True)
+            return Response(serializer.data)
+        else:
+            _candidato = Candidato.objects.get(id=pk)
+            serializer = CandidatoSerializer(_candidato)
+            return Response(serializer.data)
+
+    def post(self, request):
+        serializer = CandidatoSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"msg": "Inserido com sucesso"})
+        #return Response({"id": serializer.data['id']})
+
+    def put(self, request, pk=''):
+        candidato = Candidato.objects.get(id=pk)
+        serializer = CandidatoSerializer(candidato, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk=''):
+        candidato = Candidato.objects.get(id=pk)
+        candidato.delete()
+        return Response({"msg": "Apagado com sucesso"})
