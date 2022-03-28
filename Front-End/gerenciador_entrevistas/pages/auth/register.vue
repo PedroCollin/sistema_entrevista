@@ -31,7 +31,7 @@
           <input
             type="password"
             placeholder="Entre com sua senha"
-            v-model="password"
+            v-model="senha"
             required
           />
         </div>

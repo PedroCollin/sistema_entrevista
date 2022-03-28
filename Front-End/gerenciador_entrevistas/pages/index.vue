@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <div>
       <h1>Bem vindo!</h1>
       <h3>Seus dados</h3>

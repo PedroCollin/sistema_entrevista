@@ -4,8 +4,9 @@
         <subheader class="subHeader">
             <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             <div class="subDiv">
-                <a class="texto1" href="url" style="text-decoration:none; color: inherit">Cadastro de Entrevistador</a>
+                <a class="texto1" href="../../auth/register" style="text-decoration:none; color: inherit">Cadastro de Entrevistador</a>
                 <a class="texto2" href="url" style="text-decoration:none; color: inherit">Cadastro de Candidato</a>
+                
             </div>
         </subheader>
     </div>
@@ -14,6 +15,7 @@
 <script>
 export default {
     name: "MainHeader"
+    
 };
 </script>
 
