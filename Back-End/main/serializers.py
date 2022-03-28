@@ -24,11 +24,6 @@ class DinamicaSerializer(serializers.ModelSerializer):
         model = Dinamica
         fields = '__all__'
 
-class CandidatoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Candidato
-        fields = '__all__'
-
 class AprovacaoDinamicaSerializer(serializers.ModelSerializer):
     class Meta:
         model = AprovacaoDinamica
@@ -45,6 +40,8 @@ class StatusEntrevistaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VagaSerializer(serializers.ModelSerializer):
+    curso = CursoSerializer(read_only=True)
+    statusVaga = StatusVagaSerializer(read_only=True)
     class Meta:
         model = Vaga
         fields = '__all__'
@@ -65,4 +62,11 @@ class AvaliacaoDinamicaSerializer(serializers.ModelSerializer):
 class RespostaDinamicaSerializer(serializers.ModelSerializer):
     class Meta:
         model = RespostaDinamica
+        fields = '__all__'
+
+class CandidatoSerializer(serializers.ModelSerializer):
+    cidade = CidadeSerializer(read_only=True)
+    vaga = VagaSerializer(read_only=True)
+    class Meta:
+        model = Candidato
         fields = '__all__'
