@@ -2,9 +2,12 @@ from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from .serializers import *
 from .models import *
+import jwt, datetime
+
 
 
 class Dinamica_API(APIView):
@@ -172,4 +175,76 @@ class Candidato(APIView):
     def delete(self, request, pk=''):
         candidato = Candidato.objects.get(id=pk)
         candidato.delete()
+        return Response({"msg": "Apagado com sucesso"})
+
+class AprovacaoDinamica:
+    def get(self, request, pk=''):
+        if pk == '':
+            _aprovacaoDinamica = AprovacaoDinamica.objects.all()
+            serializer = AprovacaoDinamicaSerializer(_aprovacaoDinamica, many=True)
+            return Response(serializer.data)
+        else:
+            
+            token = request.COOKIES.get('jwt')
+
+            if not token:
+                raise AuthenticationFailed('Deslogado!')
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            _aprovacaoDinamica = AprovacaoDinamica.objects.get(usuario=payload['id'], candidato=pk)
+            serializer = CandidatoSerializer(_aprovacaoDinamica)
+            return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = AprovacaoDinamicaSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"msg": "Inserido com sucesso"})
+        #return Response({"id": serializer.data['id']})
+
+    def put(self, request, pk=''):
+        aprovacaoDinamica = AprovacaoDinamica.objects.get(id=pk)
+        serializer = AprovacaoDinamicaSerializer(aprovacaoDinamica, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk=''):
+        aprovacaoDinamica = AprovacaoDinamica.objects.get(id=pk)
+        aprovacaoDinamica.delete()
+        return Response({"msg": "Apagado com sucesso"})
+
+class Entrevista:
+    def get(self, request, pk=''):
+        if pk == '':
+            _entrevista = Entrevista.objects.all()
+            serializer = EntrevistaSerializer(_entrevista, many=True)
+            return Response(serializer.data)
+        else:
+            
+            token = request.COOKIES.get('jwt')
+
+            if not token:
+                raise AuthenticationFailed('Deslogado!')
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            _entrevista = Entrevista.objects.get(usuario=payload['id'], candidato=pk)
+            serializer = EntrevistaSerializer(_entrevista)
+            return Response(serializer.data)
+
+    def post(self, request):
+        serializer = EntrevistaSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"msg": "Inserido com sucesso"})
+        #return Response({"id": serializer.data['id']})
+
+    def put(self, request, pk=''):
+        entrevista = Entrevista.objects.get(id=pk)
+        serializer = EntrevistaSerializer(entrevista, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk=''):
+        entrevista = Entrevista.objects.get(id=pk)
+        entrevista.delete()
         return Response({"msg": "Apagado com sucesso"})

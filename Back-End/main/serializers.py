@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import *
 from .models import Dinamica
+from ..users.models import *
+from ..users.serializers import *
 
 
 
@@ -30,11 +32,15 @@ class CandidatoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AprovacaoDinamicaSerializer(serializers.ModelSerializer):
+    usuario = UserSerializer(read_only=True)
+    candidato = CandidatoSerializer(read_only=True)
     class Meta:
         model = AprovacaoDinamica
         fields = '__all__'
 
 class EntrevistaSerializer(serializers.ModelSerializer):
+    usuario = UserSerializer(read_only=True)
+    candidato = CandidatoSerializer(read_only=True)
     class Meta:
         model = Entrevista
         fields = '__all__'
