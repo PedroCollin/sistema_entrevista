@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     async logout() {
-      await fetch("http://sistema-entrevista.herokuapp.com/api/logout/", {
+      await fetch("http://127.0.0.1:8000/api/logout/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

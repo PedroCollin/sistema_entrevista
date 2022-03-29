@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
 from .models import *
+from django.forms.models import model_to_dict
 
 
 class Dinamica_API(APIView):
@@ -134,33 +135,40 @@ class Vaga_Dinamica_API(APIView):
             # print(_vagaDinamica)
             dict_dinamicas = {}
             for dinamica in _vagaDinamica:
-                # print(dinamica)
-                _dinamica = Dinamica_API.get(self, request, pk=dinamica.id).data
-                # print('DINAMICA: '+str(_dinamica))
-
+                _dinamica = Dinamica_API.get(self, request, pk=dinamica.dinamica.id).data
                 try:
-                    print('teste')
+                    # print('try')
+                    # print(_vaga.id)
                     _respDinamica = RespostaDinamica.objects.filter(vagaDinamica=dinamica.id)
-                    print(len(_respDinamica))
-                    # for resp in _respDinamica:
-                    #     print(resp.list_criterios)
-
+                    print(_respDinamica)
                     _candidato = Candidato.objects.filter(vaga=_vaga.id)
-                    print(len(_candidato))
+                    # cont = 0
+                    # for resp_certa in _respDinamica:
+                    #     if resp_certa.vagaDinamica =
 
-                    if len(_respDinamica) == len(_candidato)-1:
-                        din_vaga_dinamica = VagaDinamica.objects.filter(vaga=_vaga.id, dinamica=dinamica.id)
-                        print(din_vaga_dinamica)
-                        dinamica.status = 'AOA'
-                        din_serializer = VagaDinamicaSerializer(din_vaga_dinamica, data=dinamica)
-                        din_serializer.is_valid(raise_exception=True)
-                        din_serializer.save()
-                        print('salvou')
+                    print('if KKKK')
+                    # print(_vaga.id)
+                    din_vaga_dinamica = VagaDinamica.objects.get(vaga=_vaga.id, dinamica=_dinamica['id'])
+                    print(f"STATUS: {din_vaga_dinamica.status}")
+                    print(f"NEW STATUS: {din_vaga_dinamica.status}")
+                    temp_vagaDinamica = din_vaga_dinamica
 
+                    print(len(_respDinamica))
+                    if len(_respDinamica) == len(_candidato):
+                        temp_vagaDinamica.status = 'Finalizada'
+                    elif len(_respDinamica) == 0:
+                        temp_vagaDinamica.status = 'Não iniciada'
+                    else:
+                        temp_vagaDinamica.status = 'Iniciada'
+
+                    # print(dinamica.status)
+                    din_serializer = VagaDinamicaSerializer(din_vaga_dinamica, data=model_to_dict(temp_vagaDinamica))
+                    din_serializer.is_valid(raise_exception=True)
+                    din_serializer.save()
                 except:
                     pass
-
-                _dinamica['status'] = dinamica.status
+                din_vaga_dinamica = VagaDinamica.objects.get(vaga=_vaga.id, dinamica=_dinamica['id'])
+                _dinamica['status'] = din_vaga_dinamica.status
                 dict_dinamicas[_dinamica['id']] = _dinamica
 
             _data['dinamica'] = dict_dinamicas
