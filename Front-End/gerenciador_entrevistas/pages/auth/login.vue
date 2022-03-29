@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     async enviarLogin() {
-      const responseToken = await fetch("http://127.0.0.1:8000/api/login/", {
+      const responseToken = await fetch("http://sistema-entrevista.herokuapp.com/api/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -80,7 +80,7 @@ export default {
       const token = await responseToken.json();
       console.log(token.jwt);
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/user/", {
+        const response = await fetch("http://sistema-entrevista.herokuapp.com/api/user/", {
           headers: { "Content-Type": "application/json" },
           credentials: "include",
         });
