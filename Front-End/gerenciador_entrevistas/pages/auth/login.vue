@@ -3,7 +3,10 @@
     <div class="container">
       <div class="forms">
         <div class="form login">
-          <span class="title">Login</span>
+          <div class="title-container">
+            <span class="title">Login</span>
+            <div class="imgbosch"></div>
+          </div>
 
           <form @submit.prevent="enviarLogin">
             <div class="input-field">
@@ -27,28 +30,20 @@
               <i class="uil uil-eye-slash showHidePw"></i>
             </div>
 
-            <div class="checkbox-text">
-              <div class="checkbox-content">
-                <input type="checkbox" id="logCheck" />
-                <label for="logCheck" class="text">lembrar-me</label>
-              </div>
 
-              <a href="#" class="text">Esqueceu sua senha?</a>
-            </div>
 
             <div class="input-field button">
               <input type="submit" value="Login" />
             </div>
           </form>
 
-          <div class="login-signup">
-            <span class="text"
-              >Não tem cadastro?
-              <a href="../../auth/register" class="text signup-link"
-                >Registrar-se</a
-              >
-            </span>
-          </div>
+          <!-- Só pra linkar nos cadastros, pode tirar -->
+           <div class="login-signup">       
+              <a href="../../auth/register" class="text signup-link">Cadastro Colaborador</a>
+              <a href="../../auth/registercand" class="text signup-link">Cadastro Candidato</a>
+          </div> 
+          <!-- ------------------------------------------>
+
         </div>
       </div>
     </div>

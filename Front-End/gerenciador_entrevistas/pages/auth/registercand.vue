@@ -6,7 +6,7 @@
         <div class="input-box">
           <input
             type="text"
-            placeholder="Entre com seu nome completo"
+            placeholder="Entre com o nome completo"
             v-model="nome"
             required
           />
@@ -14,34 +14,34 @@
         <div class="input-box">
           <input
             type="number"
-            placeholder="Entre com seu EDV"
-            v-model="edv"
+            placeholder="Entre com o CPF"
+            v-model="cpf"
             required
           />
         </div>
         <div class="input-box">
           <input
             type="email"
-            placeholder="Enter com seu e-mail"
-            v-model="email"
+            placeholder="Entre com a Data de Nascimento"
+            v-model="datanasc"
             required
           />
         </div>
         <div class="input-box">
           <input
             type="password"
-            placeholder="Entre com sua senha"
-            v-model="senha"
+            placeholder="Entre com a turma"
+            v-model="turma"
             required
           />
         </div>
-
+        
         <br>
         <input type="file"
        id="avatar" name="avatar"
        accept="image/png, image/jpeg">
        <br>
-       
+
         <div class="input-box button">
           <input type="Submit" value="Cadastrar" />
         </div>
@@ -54,9 +54,9 @@
 export default {
   data: () => ({
     nome: "",
-    edv: "",
-    email: "",
-    senha: "",
+    cpf: "",
+    datanasc: "",
+    turma: "",
     auth: false,
   }),
   async mounted() {
@@ -83,9 +83,9 @@ export default {
         },
         body: JSON.stringify({
           nome: this.nome,
-          email: this.email,
-          edv: this.edv,
-          password: this.senha,
+          datanasc: this.datanasc,
+          cpf: this.cpf,
+          turma: this.turma,
         }),
       });
       console.log(response);
