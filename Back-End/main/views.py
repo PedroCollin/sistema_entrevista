@@ -255,6 +255,80 @@ class AvaliacaoDinamica_API(APIView):
             return Response(serializer.data)
 
 
+class Resposta_Dinamica_API(APIView):
+    def get(self, request, pk=''):
+        if pk == '':
+
+            sort = request.GET.get('sort')
+            _respDinamica = RespostaDinamica.objects.all()
+
+            if sort == 'desc':
+                print('desc')
+                print(_respDinamica[0].candidato.nome)
+                _respDinamica = _respDinamica.order_by('-candidato_id')
+
+            serializer = RespostaDinamicaSerializer(_respDinamica, many=True)
+            return Response(serializer.data)
+        else:
+
+            sort = request.GET.get('sort')
+            _respDinamica = RespostaDinamica.objects.filter(vagaDinamica=pk)
+
+            if sort == 'desc':
+                print('desc')
+                print(_respDinamica[0].candidato.nome)
+                _respDinamica = _respDinamica.order_by('-candidato_id')
+
+            serializer = RespostaDinamicaSerializer(_respDinamica, many=True)
+            return Response(serializer.data)
+
+    def post(self, request):
+
+        dict_resposta = request.data
+        print(dict_resposta)
+        _vagaDinamica = VagaDinamica.objects.get(id=dict_resposta[0]['vagaDinamica'])
+
+        _avaDinamicas = AvaliacaoDinamica.objects.filter(dinamica=_vagaDinamica.dinamica)
+
+        print(_avaDinamicas)
+        list_cri = [ava.criterio for ava in _avaDinamicas]
+        list_peso = [ava.peso for ava in _avaDinamicas]
+        dict_ava = {}
+        for i, j in enumerate(list_cri):
+            dict_ava[j] = list_peso[i]
+
+        print(dict_ava)
+        temp = 0
+        for key, value in dict_resposta[0]['list_criterios'].items():
+            if key in list_cri:
+                print("TESTE: ", key)
+                print('NOTA: ', value*dict_ava[key])
+                temp += value*dict_ava[key]
+        temp = temp/len(list_cri)
+        print('tam : ', len(list_cri))
+        print("Nota: ", temp)
+        dict_resposta[0]['nota'] = temp
+        print(dict_resposta)
+
+        serializer = RespostaDinamicaSerializer(data=dict_resposta, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"msg": "Inserido com sucesso"})
+        #return Response({"id": serializer.data['id']})
+
+    def put(self, request, pk=''):
+        _resDinamica = RespostaDinamica.objects.get(id=pk)
+        serializer = RespostaDinamicaSerializer(_resDinamica, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk=''):
+        _resDinamica = RespostaDinamica.objects.get(id=pk)
+        _resDinamica.delete()
+        return Response({"msg": "Apagado com sucesso"})
+
+
 class Vaga_API(APIView):
     def get(self, request, pk=''):
         if pk == '':

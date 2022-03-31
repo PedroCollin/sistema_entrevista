@@ -15,4 +15,7 @@ urlpatterns = [
 
     path('candidato/', Candidato_API.as_view()),
     path('candidato/<int:pk>/', Candidato_API.as_view()),
+
+    path('respostaDinamica/', Resposta_Dinamica_API.as_view()),
+    path('respostaDinamica/<int:pk>/', Resposta_Dinamica_API.as_view()),
 ]

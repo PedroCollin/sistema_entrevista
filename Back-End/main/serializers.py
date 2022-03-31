@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from .models import Dinamica
-
+from users.serializers import UserSerializer
 
 
 class StatusVagaSerializer(serializers.ModelSerializer):
@@ -59,14 +59,18 @@ class AvaliacaoDinamicaSerializer(serializers.ModelSerializer):
         model = AvaliacaoDinamica
         fields = '__all__'
 
-class RespostaDinamicaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RespostaDinamica
-        fields = '__all__'
 
 class CandidatoSerializer(serializers.ModelSerializer):
     cidade = CidadeSerializer(read_only=True)
     vaga = VagaSerializer(read_only=True)
     class Meta:
         model = Candidato
+        fields = '__all__'
+
+class RespostaDinamicaSerializer(serializers.ModelSerializer):
+
+    usuario = UserSerializer(read_only=True)
+    candidato = CandidatoSerializer(read_only=True)
+    class Meta:
+        model = RespostaDinamica
         fields = '__all__'
