@@ -7,7 +7,6 @@
             <span class="title">Login</span>
             <div class="imgbosch"></div>
           </div>
-
           <form @submit.prevent="enviarLogin">
             <div class="input-field">
               <input
