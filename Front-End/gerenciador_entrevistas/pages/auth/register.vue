@@ -36,11 +36,16 @@
           />
         </div>
 
-        <br>
-        <input type="file"
+        <!-- <input type="file"
        id="avatar" name="avatar"
        accept="image/png, image/jpeg">
-       <br>
+       <br> -->
+       <label class="custom-file-upload">
+          <input type="file"
+            id="avatar" name="avatar"
+            @change="onFileSelected">
+            Enviar foto
+        </label>
        
         <div class="input-box button">
           <input type="Submit" value="Cadastrar" />
@@ -57,7 +62,9 @@ export default {
     edv: "",
     email: "",
     senha: "",
+    foto: "",
     auth: false,
+    selectedFiles: null,
   }),
   async mounted() {
     this.$nuxt.$on("auth", (auth) => {
@@ -86,11 +93,16 @@ export default {
           email: this.email,
           edv: this.edv,
           password: this.senha,
+          foto: this.selectedFiles,
         }),
       });
       console.log(response);
       await this.$router.push("/auth/login/");
     },
+
+    onFileSelected(event){
+      this.selectedFiles = event.target.files[0]
+    }
   },
 };
 </script>
