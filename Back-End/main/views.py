@@ -341,15 +341,15 @@ class Candidato_API(APIView):
     def get(self, request, pk=''):
         if pk == '':
             _candidato = Candidato.objects.all()
-            serializer = CandidatoSerializer(_candidato, many=True)
+            serializer = CandidatoSerializerLER(_candidato, many=True)
             return Response(serializer.data)
         else:
             _candidato = Candidato.objects.filter(vaga=pk)
-            serializer = CandidatoSerializer(_candidato, many=True)
+            serializer = CandidatoSerializerLER(_candidato, many=True)
             return Response(serializer.data)
 
     def post(self, request):
-        serializer = CandidatoSerializer(data=request.data, many=True)
+        serializer = CandidatoSerializerSALVAR(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"msg": "Inserido com sucesso"})
@@ -357,7 +357,7 @@ class Candidato_API(APIView):
 
     def put(self, request, pk=''):
         candidato = Candidato.objects.get(id=pk)
-        serializer = CandidatoSerializer(candidato, data=request.data)
+        serializer = CandidatoSerializerSALVAR(candidato, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -382,7 +382,7 @@ class AprovacaoDinamica_API(APIView):
                 raise AuthenticationFailed('Deslogado!')
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
             _aprovacaoDinamica = AprovacaoDinamica.objects.get(usuario=payload['id'], candidato=pk)
-            serializer = CandidatoSerializer(_aprovacaoDinamica)
+            serializer = CandidatoSerializerLER(_aprovacaoDinamica)
             return Response(serializer.data)
 
     def post(self, request):

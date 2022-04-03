@@ -64,23 +64,28 @@ class AvaliacaoDinamicaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CandidatoSerializer(serializers.ModelSerializer):
+class CandidatoSerializerLER(serializers.ModelSerializer):
     cidade = CidadeSerializer(read_only=True)
     vaga = VagaSerializerLER(read_only=True)
     class Meta:
         model = Candidato
         fields = '__all__'
 
+class CandidatoSerializerSALVAR(serializers.ModelSerializer):
+    class Meta:
+        model = Candidato
+        fields = '__all__'
+
 class AprovacaoDinamicaSerializer(serializers.ModelSerializer):
     usuario = UserSerializer(read_only=True)
-    candidato = CandidatoSerializer(read_only=True)
+    candidato = CandidatoSerializerLER(read_only=True)
     class Meta:
         model = AprovacaoDinamica
         fields = '__all__'
 
 class EntrevistaSerializer(serializers.ModelSerializer):
     usuario = UserSerializer(read_only=True)
-    candidato = CandidatoSerializer(read_only=True)
+    candidato = CandidatoSerializerLER(read_only=True)
     class Meta:
         model = Entrevista
         fields = '__all__'
@@ -94,7 +99,7 @@ class RespostaDinamicaSerializerLER(serializers.ModelSerializer):
     print('teste')
     print(serializers.ModelSerializer)
     usuario = UserSerializer(read_only=True)
-    candidato = CandidatoSerializer(read_only=True)
+    candidato = CandidatoSerializerLER(read_only=True)
     class Meta:
         model = RespostaDinamica
         fields = '__all__'
