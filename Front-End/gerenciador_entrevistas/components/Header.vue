@@ -1,12 +1,10 @@
 <template>
-    <div>
+    <div class="mainDiv">
         <header class="header"></header>
         <subheader class="subHeader">
             <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             <div class="subDiv">
-                <a class="texto1" href="../../auth/register" style="text-decoration:none; color: inherit">Cadastro de Entrevistador</a>
-                <a class="texto2" href="url" style="text-decoration:none; color: inherit">Cadastro de Candidato</a>
-                
+                <img class="svgImage" src="../assets/images/bars-solid.svg" alt="Botão Hamburger" height="30px" width="30px" />
             </div>
         </subheader>
     </div>
@@ -14,12 +12,12 @@
 
 <script>
 export default {
-    name: "MainHeader"
+    name: "Header"
     
 };
 </script>
 
-<style scoped>
+<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
@@ -51,9 +49,7 @@ export default {
 }
 
 @media only screen and (max-width: 1456px) {
-    .subDiv {
-        display: none;
-    }
+    
 }
 
 .subDiv {
@@ -63,10 +59,12 @@ export default {
     font-family: 'Roboto', sans-serif;
     font-size: 1.1rem;
     border: none;
+    margin-left: auto; 
+    margin-bottom: 0.5rem;
 }
 
-.texto1 {
-    margin-right: 60px;
+.mainDiv {
+    background-color: #f5f5f5;
 }
 
 </style>
