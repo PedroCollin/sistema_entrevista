@@ -37,7 +37,7 @@ export default {
         bottom: 0;
         padding: 10px 10px 10px 10px;
         width: 100%;
-        background: #f0f0f0;
+        background-color: rgb(255, 255, 255);
         font-family: 'Roboto', sans-serif;
         font-size: 16px;
     }
@@ -69,7 +69,7 @@ export default {
         display: flex;
         padding: 10px 10px 10px 10px;
         width: 100%;
-        background: #f0f0f0;
+        background-color: rgb(255, 255, 255);
         font-family: 'Roboto', sans-serif;
         text-align: left;
         font-size: 16px;

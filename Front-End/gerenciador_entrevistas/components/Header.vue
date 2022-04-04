@@ -29,7 +29,7 @@ export default {
     left: 0;
     top: 0;
     right: 0;
-    position: fixed;
+    
     height: 0.7rem;
     display: flex;
 }
@@ -44,8 +44,9 @@ export default {
 .subHeader {
     display: flex;
     align-items: center;
-    margin-top: 1.4rem;
+    margin-top: 0.7rem;
     margin-bottom: 1.4rem;
+    
 }
 
 @media only screen and (max-width: 1456px) {
@@ -64,7 +65,7 @@ export default {
 }
 
 .mainDiv {
-    background-color: #f5f5f5;
+    background-color: #ffffff;
 }
 
 </style>
