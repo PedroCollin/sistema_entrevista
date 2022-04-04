@@ -85,5 +85,5 @@ sw.*
 # Vim swap files
 *.swp
 
-# pasta de dependencias
+# pasta de dependencias ignore
 node_modules/
