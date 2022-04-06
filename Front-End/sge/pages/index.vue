@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Header />
     <div class="all">
       <h1>Bem vindo!</h1>
       <h3>Seus dados</h3>
@@ -18,13 +17,13 @@
       <a href="#" class="py-5 px-3" @click="logout">Logout</a>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br>
-    <Footer />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 export default {
+  layout: 'default',
   data() {
     return {
       auth: false,

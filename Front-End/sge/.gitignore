@@ -34,6 +34,10 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
+# Dependency directories
+node_modules/
+jspm_packages/
+
 # TypeScript v1 declaration files
 typings/
 
@@ -84,6 +88,3 @@ sw.*
 
 # Vim swap files
 *.swp
-
-# pasta de dependencias ignore
-node_modules/
