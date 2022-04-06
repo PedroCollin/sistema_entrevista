@@ -101,8 +101,8 @@ class RespostaDinamica(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
     list_criterios = jsonfield.JSONField(blank=True)
-    nota = models.IntegerField(blank=True)
-    observacao = models.TextField(blank=True)
+    nota = models.IntegerField(blank=True, default=None)
+    observacao = models.TextField(blank=True, default=None)
 
 
 

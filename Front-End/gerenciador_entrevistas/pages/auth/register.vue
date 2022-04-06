@@ -31,17 +31,24 @@
           <input
             type="password"
             placeholder="Entre com sua senha"
-            v-model="password"
+            v-model="senha"
             required
           />
         </div>
+
+        <!-- <input type="file"
+       id="avatar" name="avatar"
+       accept="image/png, image/jpeg">
+       <br> -->
+       <label class="custom-file-upload">
+          <input type="file"
+            id="avatar" name="avatar"
+            @change="onFileSelected">
+            Enviar foto
+        </label>
+       
         <div class="input-box button">
           <input type="Submit" value="Cadastrar" />
-        </div>
-        <div class="text">
-          <h3>
-            Já tem uma conta? <a href="../auth/login">Efetuar login</a>
-          </h3>
         </div>
       </form>
     </div>
@@ -55,7 +62,9 @@ export default {
     edv: "",
     email: "",
     senha: "",
+    foto: "",
     auth: false,
+    selectedFiles: null,
   }),
   async mounted() {
     this.$nuxt.$on("auth", (auth) => {
@@ -84,11 +93,16 @@ export default {
           email: this.email,
           edv: this.edv,
           password: this.senha,
+          foto: this.selectedFiles,
         }),
       });
       console.log(response);
       await this.$router.push("/auth/login/");
     },
+
+    onFileSelected(event){
+      this.selectedFiles = event.target.files[0]
+    }
   },
 };
 </script>

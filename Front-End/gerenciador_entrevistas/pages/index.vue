@@ -1,16 +1,24 @@
 <template>
-  <div>
-    <div>
+  <div class="container">
+    <Header />
+    <div class="all">
       <h1>Bem vindo!</h1>
       <h3>Seus dados</h3>
-      <h5>{{user.id}}</h5>
-      <h5>{{user.nome}}</h5>
-      <h5>{{user.edv}}</h5>
-      <h5>{{user.email}}</h5>
+      <br><br><br>
+      <h5>ID: {{user.id}}</h5>
+      <br><br><br>
+      <h5>Nome: {{user.nome}}</h5>
+      <br><br><br>
+      <h5>EDV: {{user.edv}}</h5>
+      <br><br><br>
+      <h5>Email: {{user.email}}</h5>
+      <br><br><br>
     </div>
-    <div v-if="auth">
+    <div class="all" v-if="auth">
       <a href="#" class="py-5 px-3" @click="logout">Logout</a>
     </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <Footer />
   </div>
 </template>
 
@@ -60,3 +68,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.container{
+  background-color: rgb(248, 248, 248);
+  align-content: center;
+  justify-content: center;
+}
+
+.all{ 
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin-left: 45%;
+}
+</style>

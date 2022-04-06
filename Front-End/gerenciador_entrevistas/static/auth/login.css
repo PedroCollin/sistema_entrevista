@@ -61,24 +61,27 @@
 .container.active .forms{
     height: 600px;
 }
-.container .form .title{
-    position: relative;
+.container .form .title-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content:center;
+  width: 100%;
+  height: auto;
+
+}
+ .container .form .title-container .title{   
     font-size: 27px;
     font-weight: 600;
 }
 
-.form .title::before{
+.form .title-container .imgbosch{
     content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 5px;
-    width: 32px;
-    background: rgb(20, 24, 243);
-    border-radius: 3px;
-    display: flex;
-    justify-content: space-evenly;
-}
+    height: 5.5px;
+    width: 150px;
+    border-radius: 2px; 
+    background: linear-gradient(-45deg, rgb(63, 197, 1), rgb(89, 255, 12), rgb(6, 164, 255), rgb(1, 56, 175), rgb(252, 23, 23), rgb(175, 3, 3));
+} 
 
 .form .input-field{
     position: relative;
