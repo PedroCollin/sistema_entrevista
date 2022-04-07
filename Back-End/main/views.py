@@ -41,16 +41,11 @@ class Dinamica_API(APIView):
             return Response(data)
 
     def post(self, request):
-        # post_dinamica = request.data
-        # lista_criterios = request.data['lista_criterios']
-        # post_dinamica.pop('lista_criterios')
-        # print(post_dinamica)
-        # print(lista_criterios)
-        serializer = DinamicaSerializer(data=request.data, many=True)
+        serializer = DinamicaSerializer(data=[request.data], many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        dict_data = request.data[0]['lista_criterios']
+        dict_data = request.data['lista_criterios']
         _dinamica = Dinamica.objects.latest('id')
 
         print(len(dict_data))

@@ -3,7 +3,6 @@ from enum import auto
 from platform import release
 
 import jsonfield
-from black import mask_cell
 from django.db import models
 from users.models import User
 from uuid import uuid4
