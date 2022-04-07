@@ -45,7 +45,7 @@ export default {
     display: flex;
     align-items: center;
     margin-top: 0.7rem;
-    margin-bottom: 1.4rem;
+    margin-bottom: 0.65rem;
     
 }
 
@@ -54,14 +54,11 @@ export default {
 }
 
 .subDiv {
-    left: 600px;
-    top: 2rem;
     margin-right: 1rem;
     font-family: 'Roboto', sans-serif;
     font-size: 1.1rem;
     border: none;
-    margin-left: auto; 
-    margin-bottom: 0.5rem;
+    margin-left: auto;
 }
 
 .mainDiv {
