@@ -1,16 +1,17 @@
 <template>
   <div>
     <Header />
-      <Nuxt />
+    <Nuxt />
     <Footer />
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
 <style>
+::-webkit-scrollbar {
+  display: none;
+}
 </style>

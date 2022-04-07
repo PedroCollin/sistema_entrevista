@@ -6,19 +6,19 @@
           <input
             type="text"
             placeholder="Nome da dinâmica"
-            v-model="nome_dinamica"
+            v-model="dinamica.titulo"
             required
           />
         </div>
         <div class="input-field">
-          <input type="time" class="time" v-model="duracao_dinamica" required />
+          <input type="time" step="2" class="time" v-model="dinamica.duracao" required />
         </div>
         <Divider />
 
         <span class="desc">
           <Textarea
             id="textarea"
-            v-model="value10"
+            v-model="dinamica.descricao"
             rows="5"
             cols="120"
             placeholder="Descreva a dinâmica aqui"
@@ -30,7 +30,7 @@
               <input
                 type="text"
                 placeholder="Nome da dinâmica"
-                v-model="nome_dinamica"
+                v-model="criterio"
                 required
               />
             </div>
@@ -40,13 +40,37 @@
               <input
                 type="number"
                 placeholder="Peso da dinâmica"
-                v-model="peso_dinamica"
+                v-model="peso"
                 required
               />
             </div>
-            <Button label="Success" class="p-button-raised p-button-success p-button-text"></Button>
+            <Button
+              label="Adicionar"
+              class="p-button-success p-button-text"
+              @click="addCriterio"
+            ></Button>
           </div>
+          <Divider />
+          <DataTable
+            :value="criterios"
+            responsiveLayout="scroll"
+            :scrollable="true"
+            scrollHeight="150px"
+          >
+            <Column
+              v-for="col of columns"
+              :field="col.field"
+              :header="col.header"
+              :key="col.field"
+            ></Column>
+          </DataTable>
         </Panel>
+        <Divider />
+        <Button
+          label="Registrar dinâmica"
+          class="p-button-raised p-button-success"
+          @click="enviarDinamica"
+        ></Button>
       </form>
     </div>
   </div>
@@ -57,7 +81,10 @@ import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Divider from 'primevue/divider'
 import Panel from 'primevue/panel'
-import Button from 'primevue/button';
+import Button from 'primevue/button'
+
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
 export default {
   components: {
     InputText: InputText,
@@ -65,6 +92,57 @@ export default {
     Divider: Divider,
     Panel: Panel,
     Button: Button,
+    DataTable: DataTable,
+    Column: Column,
+  },
+  data() {
+    return {
+      columns: [
+        { field: 'criterio', header: 'Critério' },
+        { field: 'peso', header: 'Peso' },
+      ],
+      criterios: [],
+      dinamica: {
+        titulo: null,
+        descricao: null,
+        duracao: null,
+        lista_criterios: {},
+      },
+      criterio: null,
+      peso: null,
+    }
+  },
+  methods: {
+    addCriterio() {
+      // console.log('Apertouuuu')
+      // console.log(this.criterios)
+      this.criterios.push({
+        criterio: this.criterio,
+        peso: this.peso,
+      })
+      for (let index = 0; index < this.criterios.length; index++) {
+        this.dinamica.lista_criterios[this.criterios[index].criterio] = this.criterios[index].peso
+      }
+      console.log(this.dinamica.lista_criterios)
+    },
+    async enviarDinamica() {
+      const responseToken = await fetch(
+        'http://127.0.0.1:8000/api/main/dinamica/',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            titulo: this.dinamica.titulo,
+            descricao: this.dinamica.descricao,
+            duracao: this.dinamica.duracao,
+            lista_criterios: this.dinamica.lista_criterios,
+          }),
+        }
+      )
+      console.log(responseToken)
+      console.log(this.dinamica)
+    },
   },
 }
 </script>
@@ -78,10 +156,10 @@ export default {
 
 .container {
   display: flex;
-  height: 90vh;
+  height: 100%;
   justify-content: center;
   align-items: center;
-  padding: 20vh;
+  padding: 5vh;
   background-color: #e6e6e6;
 }
 
@@ -114,6 +192,12 @@ export default {
 .addCriterio {
   display: flex;
   flex-direction: row;
+}
+
+.p-button-success {
+  width: 30%;
+  height: 5vh;
+  margin-top: 30px;
 }
 
 .input-field input {
