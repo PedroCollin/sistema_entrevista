@@ -24,9 +24,9 @@ import Card from 'primevue/card';
 
 export default {
     name: "Card",
-    
+
     components: {
-        Card:Card
+        Card:Card,
     },
 }
 </script>
