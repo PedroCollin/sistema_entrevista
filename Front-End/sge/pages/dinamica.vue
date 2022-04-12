@@ -211,6 +211,7 @@ export default {
   border-bottom: 2px solid #ccc;
   border-top: 2px solid transparent;
   transition: all 0.2s ease;
+  border-radius: 0.2rem;
 }
 
 .time {
