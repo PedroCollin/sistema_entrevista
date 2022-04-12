@@ -12,7 +12,7 @@
       <br><br><br>
       <h5>Email: {{user.email}}</h5>
       <br><br><br>
-      <Card />
+      <!-- <Card /> -->
     </div>
     <div class="all" v-if="auth">
       <a href="#" class="py-5 px-3" @click="logout">Logout</a>

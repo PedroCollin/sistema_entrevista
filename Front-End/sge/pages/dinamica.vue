@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <Toast position="top-rigth" group="tl" />
+
     <div class="form">
       <form @submit.prevent="enviarLogin">
         <div class="input-field">
@@ -11,7 +13,13 @@
           />
         </div>
         <div class="input-field">
-          <input type="time" step="2" class="time" v-model="dinamica.duracao" required />
+          <input
+            type="time"
+            step="2"
+            class="time"
+            v-model="dinamica.duracao"
+            required
+          />
         </div>
         <Divider />
 
@@ -34,7 +42,7 @@
                 required
               />
             </div>
-            <Divider layout="vertical" />
+            <Divider class="dividerCri" layout="vertical" />
 
             <div class="input-field">
               <input
@@ -85,16 +93,11 @@ import Button from 'primevue/button'
 
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+
+import Toast from 'primevue/toast';
+
 export default {
-  components: {
-    InputText: InputText,
-    Textarea: Textarea,
-    Divider: Divider,
-    Panel: Panel,
-    Button: Button,
-    DataTable: DataTable,
-    Column: Column,
-  },
+
   data() {
     return {
       columns: [
@@ -112,6 +115,9 @@ export default {
       peso: null,
     }
   },
+  mounted() {
+    this.$toast.add({severity:'success', summary: 'Success Message', detail:'Order submitted', life: 3000});
+  },
   methods: {
     addCriterio() {
       // console.log('Apertouuuu')
@@ -121,9 +127,18 @@ export default {
         peso: this.peso,
       })
       for (let index = 0; index < this.criterios.length; index++) {
-        this.dinamica.lista_criterios[this.criterios[index].criterio] = this.criterios[index].peso
+        this.dinamica.lista_criterios[this.criterios[index].criterio] =
+          this.criterios[index].peso
       }
+      this.criterio = ''
+      this.peso = ''
       console.log(this.dinamica.lista_criterios)
+      this.$toast.add({
+        severity: 'success',
+        summary: 'Success Message',
+        detail: 'Message Content',
+        life: 3000,
+      })
     },
     async enviarDinamica() {
       const responseToken = await fetch(
@@ -260,5 +275,23 @@ export default {
 }
 .button input:hover {
   background-color: #265df2;
+}
+
+@media screen and (max-width: 1400px) {
+  .addCriterio {
+    flex-direction: column;
+  }
+
+  .dividerCri {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .p-button-raised {
+    height: 3rem;
+    width: 8rem;
+    font-size: 10pt;
+  }
 }
 </style>
