@@ -12,8 +12,8 @@ from cpf_field.models import CPFField
 class Curso(models.Model):
     titulo = models.CharField(max_length=255, blank=True)
     descricao = models.TextField(blank=True)
-    data_inicio = models.DateField(auto_now_add=False, default=datetime.datetime.now())
-    data_termino = models.DateField(auto_now_add=False, default=datetime.datetime.now())
+    periodo = models.CharField(max_length=255, blank=True)
+    carga_horaria = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.titulo
