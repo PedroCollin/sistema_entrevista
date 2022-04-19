@@ -59,7 +59,8 @@ export default {
       "Button",
       "DataTable",
       "Column",
-      "Toast",
+      "toast",
+      "Dropdown",
     ]
   },
 }

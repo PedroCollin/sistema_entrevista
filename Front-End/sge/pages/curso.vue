@@ -1,20 +1,26 @@
 <template>
   <div class="painel">
+    <toast position="top-right" />
     <div class="painel-image"></div>
     <div class="painel-form">
       <div class="form">
         <form @submit.prevent="enviarLogin">
           <div class="input-field">
-            <input type="text" placeholder="Nome da dinâmica" required />
+            <input
+              type="text"
+              placeholder="Nome da dinâmica"
+              v-model="curso.titulo"
+              required
+            />
           </div>
           <div class="flex-row">
             <div class="input-field">
-              <input
-                type="text"
-                step="2"
-                class="periodo"
-                placeholder="Perido do Curso"
-                required
+              <Dropdown
+                class="dropdown"
+                v-model="curso.periodo"
+                :options="periodos"
+                optionLabel="name"
+                placeholder="Selecione um periodo"
               />
             </div>
             <Divider class="dividerCri" layout="vertical" />
@@ -24,6 +30,7 @@
                 step="2"
                 class="hora"
                 placeholder="Carga horaria"
+                v-model="curso.carga_horaria"
                 required
               />
             </div>
@@ -37,13 +44,14 @@
               cols="90"
               placeholder="Descreva a dinâmica aqui"
               class="descricao"
+              v-model="curso.descricao"
             ></Textarea>
           </span>
           <div class="button-bottom">
             <Button
               label="Registrar Curso"
               class="p-button-raised p-button-success"
-              @click="enviarDinamica"
+              @click="enviarCurso"
             ></Button>
           </div>
         </form>
@@ -53,24 +61,85 @@
 </template>
 
 <script>
-export default {}
+export default {
+
+  data() {
+    return {
+      selectedPeriodo: null,
+      periodos: [
+        { name: 'Manhã', code: 'Manha' },
+        { name: 'Tarde', code: 'Tarde' },
+        { name: 'Noite', code: 'Noite' },
+      ],
+      curso: {
+        titulo: null,
+        descricao: null,
+        periodo: null,
+        carga_horaria: null,
+      },
+    }
+  },
+  methods: {
+    async enviarCurso() {
+      console.log(this.curso)
+      const responseToken = await fetch(
+        'http://127.0.0.1:8000/api/main/curso/',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify([
+            {
+              titulo: this.curso.titulo,
+              descricao: this.curso.descricao,
+              periodo: this.curso.periodo.name,
+              carga_horaria: this.curso.carga_horaria,
+            },
+          ]),
+        }
+      )
+      if (responseToken.status != '200') {
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Erro ao registrar nova dinâmica',
+          detail: 'Error: ' + responseToken.status,
+          life: 3000,
+        })
+
+        this.curso.titulo = null
+        this.curso.descricao = null
+        this.curso.periodo.name = null
+        this.curso.carga_horaria = null
+      } else {
+        this.$toast.add({
+          severity: 'success',
+          summary: 'Dinâmica cadastrada com sucesso',
+          detail: 'Dinâmica registrada',
+          life: 3000,
+        })
+      }
+      console.log(responseToken)
+      console.log(this.dinamica)
+    },
+  },
+}
 </script>
 
 <style scoped>
 .painel {
   width: 100%;
-  height: 93vh;
+  height: 92vh;
   background-color: #f7f7f7;
   display: flex;
   flex-direction: row;
 }
 
 .painel-image {
-  background-color: aquamarine;
   width: 50%;
   height: 100%;
   background-image: url('./../assets/images/editado.jpg');
-  background-repeat: no-repeat;
+
+  background-repeat: no-repeat center center;
   background-size: cover;
 }
 
@@ -79,8 +148,9 @@ export default {}
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2.5rem;
+  padding: 3.5rem;
   padding-top: 1rem;
+  margin-bottom: 55px;
 }
 
 .flex-row {
@@ -111,12 +181,17 @@ export default {}
   height: 50vh;
 }
 
-.button-bottom{
+.p-dropdown {
+}
+
+.button-bottom {
   display: flex;
   flex-direction: row;
   justify-content: right;
-  margin-top: 30px;
+  align-content: top;
+  margin-top: 5%;
 }
+
 /* --------------------------------------------------------------------------------- */
 
 .form .input-field {
@@ -128,8 +203,23 @@ export default {}
 
 .input-field input {
   position: absolute;
-  height: 7vh;
-  min-height: 7vh;
+  height: 3.2rem;
+  min-height: 3rem;
+  width: 100%;
+  padding: 0 10px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  border-bottom: 2px solid #ccc;
+  border-top: 2px solid transparent;
+  transition: all 0.2s ease;
+  border-radius: 0.2rem;
+}
+
+.input-field .dropdown {
+  position: absolute;
+  height: 3.2rem;
+  min-height: 3rem;
   width: 100%;
   padding: 0 10px;
   border: none;
@@ -152,6 +242,12 @@ export default {}
 }
 .input-field textarea:is(:focus, :valid) ~ i {
   color: #4070f4;
+}
+.input-field .dropdown:is(:focus, :valid) {
+  border-bottom-color: #4070f4 !important;
+}
+.input-field .dropdown:is(:focus, :valid) {
+  color: #4070f4 !important;
 }
 .checkbox-content input {
   margin: 0 8px -2px 4px;
@@ -178,8 +274,9 @@ export default {}
   }
 
   .painel-image {
-    width: 100%;
-    height: 50%;
+    /* width: 100%;
+    height: 50%; */
+    display: none;
   }
 
   .painel-form {

@@ -287,9 +287,13 @@ class Curso_API(APIView):
             return Response(serializer.data)
 
     def post(self, request):
+        print(request.data)
         serializer = CursoSerializer(data=request.data, many=True)
+        print('a')
         serializer.is_valid(raise_exception=True)
+        print('b')
         serializer.save()
+        print('c')
         return Response({"msg": "Inserido com sucesso"})
         #return Response({"id": serializer.data['id']})
 

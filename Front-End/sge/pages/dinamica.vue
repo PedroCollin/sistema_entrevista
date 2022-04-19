@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Toast position="top-rigth" group="tl" />
+    <toast position="top-right" />
 
     <div class="form">
       <form @submit.prevent="enviarLogin">
@@ -85,19 +85,7 @@
 </template>
 
 <script>
-import InputText from 'primevue/inputtext'
-import Textarea from 'primevue/textarea'
-import Divider from 'primevue/divider'
-import Panel from 'primevue/panel'
-import Button from 'primevue/button'
-
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-
-import Toast from 'primevue/toast';
-
 export default {
-
   data() {
     return {
       columns: [
@@ -115,48 +103,81 @@ export default {
       peso: null,
     }
   },
-  mounted() {
-    this.$toast.add({severity:'success', summary: 'Success Message', detail:'Order submitted', life: 3000});
-  },
+  // mounted() {
+  //   this.$toast.add({severity:'success', summary: 'Success Message', detail:'Order submitted', life: 3000});
+  // },
   methods: {
     addCriterio() {
       // console.log('Apertouuuu')
       // console.log(this.criterios)
-      this.criterios.push({
-        criterio: this.criterio,
-        peso: this.peso,
-      })
-      for (let index = 0; index < this.criterios.length; index++) {
-        this.dinamica.lista_criterios[this.criterios[index].criterio] =
-          this.criterios[index].peso
+      if (this.criterio != null && this.peso != null) {
+        this.criterios.push({
+          criterio: this.criterio,
+          peso: this.peso,
+        })
+        for (let index = 0; index < this.criterios.length; index++) {
+          this.dinamica.lista_criterios[this.criterios[index].criterio] =
+            this.criterios[index].peso
+        }
+        this.criterio = ''
+        this.peso = ''
+        console.log(this.dinamica.lista_criterios)
+        this.$toast.add({
+          severity: 'success',
+          summary: 'Criterio inserido com sucesso',
+          detail: 'Criterio adicionado',
+          life: 3000,
+        })
+      } else {
+        this.$toast.add({
+          severity: 'warn',
+          summary: 'Prencha o campo de criterio e peso',
+          detail: 'Todos os campos são necessarios',
+          life: 3000,
+        })
       }
-      this.criterio = ''
-      this.peso = ''
-      console.log(this.dinamica.lista_criterios)
-      this.$toast.add({
-        severity: 'success',
-        summary: 'Success Message',
-        detail: 'Message Content',
-        life: 3000,
-      })
     },
     async enviarDinamica() {
-      const responseToken = await fetch(
-        'http://127.0.0.1:8000/api/main/dinamica/',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            titulo: this.dinamica.titulo,
-            descricao: this.dinamica.descricao,
-            duracao: this.dinamica.duracao,
-            lista_criterios: this.dinamica.lista_criterios,
-          }),
+      try {
+        const responseToken = await fetch(
+          'http://127.0.0.1:8000/api/main/dinamica/',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+              titulo: this.dinamica.titulo,
+              descricao: this.dinamica.descricao,
+              duracao: this.dinamica.duracao,
+              lista_criterios: this.dinamica.lista_criterios,
+            }),
+          }
+        )
+        if (responseToken.status != '200') {
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Erro ao registrar nova dinâmica',
+            detail: 'Error: ' + responseToken.status,
+            life: 3000,
+          })
+        } else {
+          this.$toast.add({
+            severity: 'success',
+            summary: 'Dinâmica cadastrada com sucesso',
+            detail: 'Dinâmica registrada',
+            life: 3000,
+          })
         }
-      )
-      console.log(responseToken)
-      console.log(this.dinamica)
+        console.log(responseToken)
+        console.log(this.dinamica)
+      } catch (error) {
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Erro ao registrar nova dinâmica',
+          detail: 'Erro: ' + error,
+          life: 3000,
+        })
+      }
     },
   },
 }
