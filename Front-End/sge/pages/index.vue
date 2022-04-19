@@ -1,23 +1,15 @@
 <template>
   <div class="container">
     <div class="all">
-      <h1>Bem vindo!</h1>
-      <h3>Seus dados</h3>
-      <br><br><br>
-      <h5>ID: {{user.id}}</h5>
-      <br><br><br>
-      <h5>Nome: {{user.nome}}</h5>
-      <br><br><br>
-      <h5>EDV: {{user.edv}}</h5>
-      <br><br><br>
-      <h5>Email: {{user.email}}</h5>
-      <br><br><br>
-      <!-- <Card /> -->
+      <br>
+      <div class="all" v-if="auth">
+        <a href="../../auth/login" class="py-5 px-3" @click="logout">Logout</a>
+      </div>
+      <br>
+      <Card />
+      <h2>Bem vindo {{user.nome}}!</h2>
     </div>
-    <div class="all" v-if="auth">
-      <a href="#" class="py-5 px-3" @click="logout">Logout</a>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
 </template>
 
