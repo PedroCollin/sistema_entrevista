@@ -322,6 +322,8 @@ class Vaga_API(APIView):
             return Response(serializer.data)
 
     def post(self, request):
+        print('testeVAGA')
+        print(request.data)
         serializer = VagaSerializerSALVAR(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()

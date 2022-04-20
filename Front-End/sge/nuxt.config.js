@@ -61,6 +61,7 @@ export default {
       "Column",
       "toast",
       "Dropdown",
+      "Steps",
     ]
   },
 }

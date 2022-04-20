@@ -4,54 +4,55 @@
     <div class="painel-image"></div>
     <div class="painel-form">
       <div class="form">
+        <Steps :model="items" :readonly="true"  style="margin-bottom: 1rem" />
+        <router-view />
         <form>
           <div class="input-field">
+            <Dropdown
+              class="dropdown"
+              v-model="vaga.curso"
+              :options="cursos"
+              option-value="code"
+              optionLabel="name"
+              placeholder="Selecione um curso"
+            />
+          </div>
+
+          <div class="input-field">
             <input
-              type="text"
-              placeholder="Nome do curso"
-              v-model="curso.titulo"
+              type="number"
+              placeholder="Quantidade de vagas"
+              v-model="vaga.quantidadeVaga"
               required
             />
           </div>
-          <div class="flex-row">
-            <div class="input-field">
-              <Dropdown
-                class="dropdown"
-                v-model="curso.periodo"
-                :options="periodos"
-                optionLabel="name"
-                placeholder="Selecione um periodo"
-              />
-            </div>
-            <Divider class="dividerCri" layout="vertical" />
+
+          <div class="datas">
+            <h4>Data de abertura</h4>
             <div class="input-field">
               <input
-                type="number"
-                step="2"
-                class="hora"
-                placeholder="Carga horaria"
-                v-model="curso.carga_horaria"
+                type="date"
+                placeholder="Data de abertura"
+                v-model="vaga.dataAbertura"
+                required
+              />
+            </div>
+            <h4>Data de fechamento</h4>
+            <div class="input-field">
+              <input
+                type="date"
+                placeholder="Data de fechamento"
+                v-model="vaga.dataFechamento"
                 required
               />
             </div>
           </div>
 
-          <Divider />
-          <span class="desc">
-            <Textarea
-              id="textarea"
-              rows="5"
-              cols="90"
-              placeholder="Descreva a dinâmica aqui"
-              class="descricao"
-              v-model="curso.descricao"
-            ></Textarea>
-          </span>
           <div class="button-bottom">
             <Button
-              label="Registrar Curso"
+              label="Registrar Vaga"
               class="p-button-raised p-button-success"
-              @click="enviarCurso"
+              @click="enviarVaga"
             ></Button>
           </div>
         </form>
@@ -64,28 +65,48 @@
 export default {
   data() {
     return {
-      selectedPeriodo: null,
-      periodos: [
-        { name: 'Manhã', code: 'Manha' },
-        { name: 'Tarde', code: 'Tarde' },
-        { name: 'Noite', code: 'Noite' },
+      selectedCurso: null,
+      cursos: [
+        { name: 'Smart Automation', code: '1' },
+        { name: 'Mecatronica', code: '2' },
+        { name: 'Artes', code: '3' },
       ],
-      curso: {
-        titulo: "",
-        descricao: "",
-        periodo: "",
-        carga_horaria: "",
+      vaga: {
+        curso: '',
+        quantidadeVaga: '',
+        dataAbertura: '',
+        dataFechamento: '',
       },
+      items: [
+        {
+          label: 'Personal',
+          to: '/',
+        },
+        {
+          label: 'Seat',
+          to: '/seat',
+        },
+        {
+          label: 'Payment',
+          to: '/payment',
+        },
+        {
+          label: 'Confirmation',
+          to: '/confirmation',
+        },
+      ],
+      formObject: {},
     }
   },
   methods: {
-    async enviarCurso() {
-      console.log(this.curso)
+    async enviarVaga() {
+      console.log('Vaga antes do POST')
+      console.log(this.vaga)
       if (
-        this.curso.titulo == "" ||
-        this.curso.descricao == "" ||
-        this.curso.periodo == "" ||
-        this.curso.carga_horaria == ""
+        this.vaga.curso == '' ||
+        this.vaga.quantidadeVaga == '' ||
+        this.vaga.dataAbertura == '' ||
+        this.vaga.dataFechamento == ''
       ) {
         this.$toast.add({
           severity: 'error',
@@ -96,40 +117,42 @@ export default {
       } else {
         try {
           const responseToken = await fetch(
-            'http://127.0.0.1:8000/api/main/curso/',
+            'http://127.0.0.1:8000/api/main/vaga/',
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               credentials: 'include',
               body: JSON.stringify([
                 {
-                  titulo: this.curso.titulo,
-                  descricao: this.curso.descricao,
-                  periodo: this.curso.periodo.name,
-                  carga_horaria: this.curso.carga_horaria,
+                  curso: this.vaga.curso,
+                  quantidadeVaga: this.vaga.quantidadeVaga,
+                  dataAbertura: this.vaga.dataAbertura,
+                  dataFechamento: this.vaga.dataFechamento,
+                  statusVaga: 1,
                 },
               ]),
             }
           )
+          console.log(responseToken)
           if (responseToken.status != '200') {
             this.$toast.add({
               severity: 'error',
-              summary: 'Erro ao registrar nova dinâmica',
+              summary: 'Erro ao registrar nova vaga',
               detail: 'Error: ' + responseToken.status,
               life: 3000,
             })
-
-            this.curso.titulo = ""
-            this.curso.descricao = ""
-            this.curso.periodo.name = ""
-            this.curso.carga_horaria = ""
           } else {
             this.$toast.add({
               severity: 'success',
-              summary: 'Dinâmica cadastrada com sucesso',
-              detail: 'Dinâmica registrada',
+              summary: 'Vaga cadastrada com sucesso',
+              detail: 'Vaga registrada',
               life: 3000,
             })
+
+            this.vaga.curso = ''
+            this.vaga.dataAbertura = ''
+            this.vaga.quantidadeVaga = ''
+            this.vaga.dataFechamento = ''
           }
           console.log(responseToken)
         } catch (error) {
@@ -158,8 +181,7 @@ export default {
 .painel-image {
   width: 50%;
   height: 100%;
-  background-image: url('./../assets/images/editado.jpg');
-
+  background-image: url('./../assets/images/bosch_logo_vaga.png');
   background-repeat: no-repeat center center;
   background-size: cover;
 }
@@ -169,40 +191,9 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 3.5rem;
-  padding-top: 1rem;
-  margin-bottom: 55px;
-}
-
-.flex-row {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-}
-
-.input-field .periodo {
-  width: 100%;
-  margin-right: 1rem;
-}
-
-.input-field .hora {
-  width: 100%;
-}
-
-.dividerCri {
-  margin-top: 35px;
-  margin-bottom: 10px;
-  height: 40px;
-}
-
-.descricao {
-  max-width: 100%;
-  max-height: 50vh;
-  width: 100%;
-  height: 50vh;
-}
-
-.p-dropdown {
+  padding: 7.5rem;
+  align-content: center;
+  justify-content: center;
 }
 
 .button-bottom {
@@ -210,7 +201,7 @@ export default {
   flex-direction: row;
   justify-content: right;
   align-content: top;
-  margin-top: 5%;
+  margin-top: 10%;
 }
 
 /* --------------------------------------------------------------------------------- */
@@ -219,7 +210,7 @@ export default {
   position: relative;
   height: 35px;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .input-field input {
@@ -289,11 +280,21 @@ export default {
   margin-top: 400px;
 }
 
-@media screen and (max-width: 1100px) {
-  .painel {
-    flex-direction: column;
-  }
+.datas {
+  margin-top: 55px;
+}
 
+.datas .input-field {
+  margin-top: 5px;
+  margin-bottom: 40px;
+}
+
+.datas h4 {
+  color: rgb(74, 74, 74);
+  padding: 0.1rem;
+}
+
+@media screen and (max-width: 1100px) {
   .painel-image {
     /* width: 100%;
     height: 50%; */
@@ -302,7 +303,53 @@ export default {
 
   .painel-form {
     width: 100%;
-    height: 50%;
+    height: 80%;
+  }
+
+  .button-bottom {
+    margin-top: 10%;
+  }
+
+  .button-bottom Button {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .painel-image {
+    /* width: 100%;
+    height: 50%; */
+    display: none;
+  }
+
+  .painel-form {
+    width: 100%;
+    height: 80%;
+    padding: 2rem;
+    padding-top: 6rem;
+  }
+
+  .button-bottom {
+    margin-top: 10%;
+  }
+
+  .button-bottom Button {
+    font-size: 15px;
+  }
+
+  .datas h4 {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  .form .input-field {
+    position: relative;
+    height: 35px;
+    margin-top: 2rem;
+  }
+
+  .datas .input-field {
+    margin-top: 5px;
+    margin-bottom: 40px;
   }
 }
 </style>
