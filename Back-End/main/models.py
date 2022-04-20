@@ -10,7 +10,7 @@ from cpf_field.models import CPFField
 
 
 class Curso(models.Model):
-    titulo = models.CharField(max_length=255, blank=True)
+    titulo = models.CharField(max_length=255, blank=False)
     descricao = models.TextField(blank=True)
     periodo = models.CharField(max_length=255, blank=True)
     carga_horaria = models.IntegerField(blank=True, null=True)

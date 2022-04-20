@@ -4,11 +4,11 @@
     <div class="painel-image"></div>
     <div class="painel-form">
       <div class="form">
-        <form @submit.prevent="enviarLogin">
+        <form>
           <div class="input-field">
             <input
               type="text"
-              placeholder="Nome da dinâmica"
+              placeholder="Nome do curso"
               v-model="curso.titulo"
               required
             />
@@ -62,7 +62,6 @@
 
 <script>
 export default {
-
   data() {
     return {
       selectedPeriodo: null,
@@ -82,44 +81,66 @@ export default {
   methods: {
     async enviarCurso() {
       console.log(this.curso)
-      const responseToken = await fetch(
-        'http://127.0.0.1:8000/api/main/curso/',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify([
-            {
-              titulo: this.curso.titulo,
-              descricao: this.curso.descricao,
-              periodo: this.curso.periodo.name,
-              carga_horaria: this.curso.carga_horaria,
-            },
-          ]),
-        }
-      )
-      if (responseToken.status != '200') {
+      if (
+        this.curso.titulo == null ||
+        this.curso.descricao == null ||
+        this.curso.periodo == null ||
+        this.curso.carga_horaria == null
+      ) {
         this.$toast.add({
           severity: 'error',
-          summary: 'Erro ao registrar nova dinâmica',
-          detail: 'Error: ' + responseToken.status,
+          summary: 'Preencha todos os campos!',
+          detail: 'Error ',
           life: 3000,
         })
-
-        this.curso.titulo = null
-        this.curso.descricao = null
-        this.curso.periodo.name = null
-        this.curso.carga_horaria = null
       } else {
-        this.$toast.add({
-          severity: 'success',
-          summary: 'Dinâmica cadastrada com sucesso',
-          detail: 'Dinâmica registrada',
-          life: 3000,
-        })
+        try {
+          const responseToken = await fetch(
+            'http://127.0.0.1:8000/api/main/curso/',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify([
+                {
+                  titulo: this.curso.titulo,
+                  descricao: this.curso.descricao,
+                  periodo: this.curso.periodo.name,
+                  carga_horaria: this.curso.carga_horaria,
+                },
+              ]),
+            }
+          )
+          if (responseToken.status != '200') {
+            this.$toast.add({
+              severity: 'error',
+              summary: 'Erro ao registrar nova dinâmica',
+              detail: 'Error: ' + responseToken.status,
+              life: 3000,
+            })
+
+            this.curso.titulo = null
+            this.curso.descricao = null
+            this.curso.periodo.name = null
+            this.curso.carga_horaria = null
+          } else {
+            this.$toast.add({
+              severity: 'success',
+              summary: 'Dinâmica cadastrada com sucesso',
+              detail: 'Dinâmica registrada',
+              life: 3000,
+            })
+          }
+          console.log(responseToken)
+        } catch (error) {
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Preencha todos os campos!',
+            detail: 'Error: ' + error,
+            life: 3000,
+          })
+        }
       }
-      console.log(responseToken)
-      console.log(this.dinamica)
     },
   },
 }
@@ -268,7 +289,7 @@ export default {
   margin-top: 400px;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 1100px) {
   .painel {
     flex-direction: column;
   }

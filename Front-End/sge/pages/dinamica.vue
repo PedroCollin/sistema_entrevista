@@ -3,7 +3,7 @@
     <toast position="top-right" />
 
     <div class="form">
-      <form @submit.prevent="enviarLogin">
+      <form>
         <div class="input-field">
           <input
             type="text"
@@ -108,9 +108,7 @@ export default {
   // },
   methods: {
     addCriterio() {
-      // console.log('Apertouuuu')
-      // console.log(this.criterios)
-      if (this.criterio != null && this.peso != null) {
+      if (this.criterio != null || this.peso != null) {
         this.criterios.push({
           criterio: this.criterio,
           peso: this.peso,
@@ -119,8 +117,8 @@ export default {
           this.dinamica.lista_criterios[this.criterios[index].criterio] =
             this.criterios[index].peso
         }
-        this.criterio = ''
-        this.peso = ''
+        this.criterio = null
+        this.peso = null
         console.log(this.dinamica.lista_criterios)
         this.$toast.add({
           severity: 'success',
