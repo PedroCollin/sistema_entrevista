@@ -6,18 +6,16 @@
         <a href="../../auth/login" class="py-5 px-3" @click="logout">Logout</a>
       </div>
       <br>
-<<<<<<< HEAD
       <!-- <Card /> -->
-=======
->>>>>>> c4736b46e1455fc604f23145328fd16cdd2d323c
       <h2>Bem vindo {{user.nome}}!</h2>
     </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   layout: 'default',
   data() {

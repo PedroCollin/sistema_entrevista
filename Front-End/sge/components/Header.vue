@@ -4,17 +4,27 @@
         <subheader class="subHeader">
             <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             <div class="subDiv">
-                <img class="svgImage" src="../assets/images/bars-solid.svg" alt="Botão Hamburger" height="30px" width="30px" />
+                <Sidebar :visible.sync="visibleRight" position="right">
+                    <h3>Conteudo</h3>
+                </Sidebar>
+
+                <Button icon="pi pi-bars" @click="visibleRight = true" />
             </div>
         </subheader>
     </div>
 </template>
 
 <script>
+
 export default {
-    name: "Header"
+    props: [""],
     
-};
+    data() {
+        return {
+            visibleRight: false,
+        }
+    }
+}
 </script>
 
 <style>
