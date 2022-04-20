@@ -6,7 +6,6 @@
         <a href="../../auth/login" class="py-5 px-3" @click="logout">Logout</a>
       </div>
       <br>
-      <Card />
       <h2>Bem vindo {{user.nome}}!</h2>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
