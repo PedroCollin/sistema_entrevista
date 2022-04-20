@@ -9,12 +9,13 @@
       <!-- <Card /> -->
       <h2>Bem vindo {{user.nome}}!</h2>
     </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   layout: 'default',
   data() {
