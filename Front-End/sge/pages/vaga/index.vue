@@ -4,58 +4,64 @@
     <div class="painel-image"></div>
     <div class="painel-form">
       <div class="form">
-        <Steps :model="items" :readonly="true"  style="margin-bottom: 1rem" />
-        <router-view />
-        <form>
-          <div class="input-field">
-            <Dropdown
-              class="dropdown"
-              v-model="vaga.curso"
-              :options="cursos"
-              option-value="code"
-              optionLabel="name"
-              placeholder="Selecione um curso"
-            />
-          </div>
+        <Steps :model="items" :readonly="true" style="margin-bottom: 1rem" />
+        <keep-alive>
+          <form>
+            <div class="input-field">
+              <Dropdown
+                class="dropdown"
+                v-model="vaga.curso"
+                :options="cursos"
+                option-value="code"
+                optionLabel="name"
+                placeholder="Selecione um curso"
+              />
+            </div>
 
-          <div class="input-field">
-            <input
-              type="number"
-              placeholder="Quantidade de vagas"
-              v-model="vaga.quantidadeVaga"
-              required
-            />
-          </div>
-
-          <div class="datas">
-            <h4>Data de abertura</h4>
             <div class="input-field">
               <input
-                type="date"
-                placeholder="Data de abertura"
-                v-model="vaga.dataAbertura"
+                type="number"
+                placeholder="Quantidade de vagas"
+                v-model="vaga.quantidadeVaga"
                 required
               />
             </div>
-            <h4>Data de fechamento</h4>
-            <div class="input-field">
-              <input
-                type="date"
-                placeholder="Data de fechamento"
-                v-model="vaga.dataFechamento"
-                required
-              />
-            </div>
-          </div>
 
-          <div class="button-bottom">
-            <Button
-              label="Registrar Vaga"
-              class="p-button-raised p-button-success"
-              @click="enviarVaga"
-            ></Button>
-          </div>
-        </form>
+            <div class="datas">
+              <h4>Data de abertura</h4>
+              <div class="input-field">
+                <input
+                  type="date"
+                  placeholder="Data de abertura"
+                  v-model="vaga.dataAbertura"
+                  required
+                />
+              </div>
+              <h4>Data de fechamento</h4>
+              <div class="input-field">
+                <input
+                  type="date"
+                  placeholder="Data de fechamento"
+                  v-model="vaga.dataFechamento"
+                  required
+                />
+              </div>
+            </div>
+            <router-view
+              :formData="formObject"
+              @prevPage="prevPage($event)"
+              @nextPage="nextPage($event)"
+              @complete="complete"
+            />
+            <div class="button-bottom">
+              <!-- <Button
+                label="Registrar Vaga"
+                class="p-button-raised p-button-success"
+                @click="enviarVaga"
+              ></Button> -->
+            </div>
+          </form>
+        </keep-alive>
       </div>
     </div>
   </div>
@@ -79,26 +85,44 @@ export default {
       },
       items: [
         {
-          label: 'Personal',
+          label: 'Dados da Vaga',
           to: '/',
         },
         {
-          label: 'Seat',
-          to: '/seat',
+          label: 'Dinâmicas',
+          to: '/vaga-dinamica',
         },
         {
-          label: 'Payment',
-          to: '/payment',
-        },
-        {
-          label: 'Confirmation',
-          to: '/confirmation',
+          label: 'Confirmação',
+          to: '/send-form',
         },
       ],
       formObject: {},
     }
   },
   methods: {
+    nextPage(event) {
+      for (let field in event.formData) {
+        this.formObject[field] = event.formData[field]
+      }
+
+      this.$router.push(this.items[event.pageIndex + 1].to)
+    },
+    prevPage(event) {
+      this.$router.push(this.items[event.pageIndex - 1].to)
+    },
+    complete() {
+      this.$toast.add({
+        severity: 'success',
+        summary: 'Order submitted',
+        detail:
+          'Dear, ' +
+          this.formObject.firstname +
+          ' ' +
+          this.formObject.lastname +
+          ' your order completed.',
+      })
+    },
     async enviarVaga() {
       console.log('Vaga antes do POST')
       console.log(this.vaga)
@@ -181,7 +205,7 @@ export default {
 .painel-image {
   width: 50%;
   height: 100%;
-  background-image: url('./../assets/images/bosch_logo_vaga.png');
+  background-image: url('../../assets/images/bosch_logo_vaga.png');
   background-repeat: no-repeat center center;
   background-size: cover;
 }
@@ -292,6 +316,18 @@ export default {
 .datas h4 {
   color: rgb(74, 74, 74);
   padding: 0.1rem;
+}
+
+::v-deep(b) {
+  display: block;
+}
+
+::v-deep(.p-card-body) {
+  padding: 2rem;
+}
+
+.p-steps .p-steps-item {
+  background-color: #4070f4;
 }
 
 @media screen and (max-width: 1100px) {

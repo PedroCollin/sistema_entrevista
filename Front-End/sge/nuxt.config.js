@@ -61,11 +61,9 @@ export default {
       "Column",
       "toast",
       "Dropdown",
-<<<<<<< HEAD
       "Steps",
-=======
       "Sidebar",
->>>>>>> ca01bb8f9019353520c33196ea435631b6ae4697
+
     ]
   },
 }
