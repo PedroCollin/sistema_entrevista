@@ -3,65 +3,96 @@
     <toast position="top-right" />
     <div class="painel-image"></div>
     <div class="painel-form">
-      <div class="form">
-        <Steps :model="items" :readonly="true" style="margin-bottom: 1rem" />
-        <keep-alive>
+      <div class="stepper">
+        <div class="stepper-progress">
+          <div
+            class="stepper-progress-bar"
+            :style="'width:' + stepperProgress"
+          ></div>
+        </div>
+
+        <div
+          class="stepper-item"
+          :class="{ current: step == item, success: step > item }"
+          v-for="item in 3"
+          :key="item"
+        >
+          <div class="stepper-item-counter">
+            <img class="icon-success" alt="" src="" />
+            <span class="number">{{ item }}</span>
+          </div>
+          <span class="stepper-item-title"> Dados da vaga </span>
+        </div>
+      </div>
+
+      <div class="steps" v-for="item in 3" :key="item">
+        <div class="form" v-if="step == item">
           <form>
-            <div class="input-field">
-              <Dropdown
-                class="dropdown"
-                v-model="vaga.curso"
-                :options="cursos"
-                option-value="code"
-                optionLabel="name"
-                placeholder="Selecione um curso"
-              />
-            </div>
+            {{ item }}
 
-            <div class="input-field">
-              <input
-                type="number"
-                placeholder="Quantidade de vagas"
-                v-model="vaga.quantidadeVaga"
-                required
-              />
-            </div>
+            <div class="step-01" v-if="item == 1">
+              <div class="input-field">
+                <Dropdown
+                  class="dropdown"
+                  v-model="vaga.curso"
+                  :options="cursos"
+                  option-value="code"
+                  optionLabel="name"
+                  placeholder="Selecione um curso"
+                />
+              </div>
 
-            <div class="datas">
-              <h4>Data de abertura</h4>
               <div class="input-field">
                 <input
-                  type="date"
-                  placeholder="Data de abertura"
-                  v-model="vaga.dataAbertura"
+                  type="number"
+                  placeholder="Quantidade de vagas"
+                  v-model="vaga.quantidadeVaga"
                   required
                 />
               </div>
-              <h4>Data de fechamento</h4>
-              <div class="input-field">
-                <input
-                  type="date"
-                  placeholder="Data de fechamento"
-                  v-model="vaga.dataFechamento"
-                  required
-                />
+
+              <div class="datas">
+                <h4>Data de abertura</h4>
+                <div class="input-field">
+                  <input
+                    type="date"
+                    placeholder="Data de abertura"
+                    v-model="vaga.dataAbertura"
+                    required
+                  />
+                </div>
+                <h4>Data de fechamento</h4>
+                <div class="input-field">
+                  <input
+                    type="date"
+                    placeholder="Data de fechamento"
+                    v-model="vaga.dataFechamento"
+                    required
+                  />
+                </div>
               </div>
             </div>
-            <router-view
-              :formData="formObject"
-              @prevPage="prevPage($event)"
-              @nextPage="nextPage($event)"
-              @complete="complete"
-            />
+
+            <div class="step-02"></div>
+
+            <div class="step-03"></div>
+
             <div class="button-bottom">
-              <!-- <Button
-                label="Registrar Vaga"
-                class="p-button-raised p-button-success"
-                @click="enviarVaga"
-              ></Button> -->
+              <Button
+                label="Anterior"
+                class="p-button-raised p-button-secondary"
+                @click="step--"
+                :disabled="step == 1"
+              ></Button>
+              <Button
+                label="Seguinte"
+                class="p-button-raised p-button-primary"
+                @click="step++"
+                :disabled="step == 3"
+              ></Button>
             </div>
           </form>
-        </keep-alive>
+        </div>
       </div>
     </div>
   </div>
@@ -83,34 +114,15 @@ export default {
         dataAbertura: '',
         dataFechamento: '',
       },
-      items: [
-        {
-          label: 'Dados da Vaga',
-          to: '/',
-        },
-        {
-          label: 'Dinâmicas',
-          to: '/vaga-dinamica',
-        },
-        {
-          label: 'Confirmação',
-          to: '/send-form',
-        },
-      ],
-      formObject: {},
+      step: 1,
     }
   },
+  computed: {
+    stepperProgress() {
+      return (100 / 3) * (this.step - 1) + '%'
+    },
+  },
   methods: {
-    nextPage(event) {
-      for (let field in event.formData) {
-        this.formObject[field] = event.formData[field]
-      }
-
-      this.$router.push(this.items[event.pageIndex + 1].to)
-    },
-    prevPage(event) {
-      this.$router.push(this.items[event.pageIndex - 1].to)
-    },
     complete() {
       this.$toast.add({
         severity: 'success',
@@ -193,7 +205,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .painel {
   width: 100%;
   height: 92vh;
@@ -223,9 +235,39 @@ export default {
 .button-bottom {
   display: flex;
   flex-direction: row;
-  justify-content: right;
+  justify-content: space-between;
   align-content: top;
   margin-top: 10%;
+
+  .p-button-primary {
+    background-color: #4070f4;
+    border: 1px solid #4070f4;
+  }
+
+  .p-button-primary:hover {
+    background: #2e5fe7 !important;
+    color: #fff;
+    border-color: #2e5fe7 !important;
+    border: none;
+  }
+
+  .p-button-secondary {
+    background-color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    color: #5c5c5c;
+  }
+
+  .p-button-secondary:hover {
+    background: #c0c0c0 !important;
+    color: #3f3f3f;
+    border-color: #c0c0c0 !important;
+    border: none;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
 }
 
 /* --------------------------------------------------------------------------------- */
@@ -326,8 +368,111 @@ export default {
   padding: 2rem;
 }
 
-.p-steps .p-steps-item {
-  background-color: #4070f4;
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 85%;
+  position: relative;
+  z-index: 0;
+  margin-top: 1rem;
+  margin-bottom: 20px;
+  margin-left: 7%;
+
+  &-progress {
+    position: absolute;
+    background-color: rgb(121, 121, 121);
+    height: 2px;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+
+    &-bar {
+      position: absolute;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background-color: #4070f4;
+      transition: all 500ms ease;
+    }
+  }
+}
+
+.stepper-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(121, 121, 121);
+  transition: all 500ms ease;
+
+  &-counter {
+    height: 50px;
+    width: 50px;
+    display: grid;
+    place-items: center;
+    background-color: #fff;
+    border-radius: 100%;
+    border: 2px solid rgb(121, 121, 121);
+    position: relative;
+
+    .icon-success {
+      position: absolute;
+      opacity: 0;
+      transform: scale(0);
+      width: 24px;
+      transition: all 500ms ease;
+    }
+    .number {
+      font-size: 22px;
+      transition: all 500ms ease;
+    }
+  }
+
+  &-title {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    font-size: 14px;
+    bottom: -24px;
+    width: 20%;
+  }
+}
+
+.stepper-item.success {
+  .stepper-item-counter {
+    border-color: #4070f4;
+    background-color: #d5d9e6;
+    color: #fff;
+    font-weight: 600;
+
+    .icon-success {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .number {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+
+  .stepper-item-title {
+    color: #4070f4;
+  }
+}
+
+.stepper-item.current {
+  .stepper-item-counter {
+    border-color: #4070f4;
+    background-color: #d5d9e6;
+    color: #fff;
+    font-weight: 600;
+
+    .stepper-item-title {
+      color: #4070f4;
+    }
+  }
 }
 
 @media screen and (max-width: 1100px) {
