@@ -1,7 +1,7 @@
 <template>
     <div class="mainDiv">
         <header class="header"></header>
-        <subheader class="subHeader">
+        <div class="subHeader">
             <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             <div class="subDiv">
                 <Sidebar :visible.sync="visibleRight" position="right">
@@ -10,7 +10,7 @@
 
                 <Button icon="pi pi-bars" @click="visibleRight = true" />
             </div>
-        </subheader>
+        </div>
     </div>
 </template>
 
