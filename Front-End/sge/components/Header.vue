@@ -2,9 +2,13 @@
     <div class="mainDiv">
         <header class="header"></header>
         <div class="subHeader">
+<<<<<<< HEAD
             <a href="../../">
                 <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             </a>
+=======
+            <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
+>>>>>>> 07f7f544e753dc271df126d20f1666de46c51d28
             <div class="subDiv">
 
                 <Sidebar :visible.sync="visibleRight" position="right">

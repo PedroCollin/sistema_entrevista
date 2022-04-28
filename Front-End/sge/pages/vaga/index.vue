@@ -21,15 +21,15 @@
             <img class="icon-success" alt="" src="" />
             <span class="number">{{ item }}</span>
           </div>
-          <span class="stepper-item-title"> Dados da vaga </span>
+          <span class="stepper-item-title">{{
+            lista_titulo_step[item - 1]
+          }}</span>
         </div>
       </div>
 
       <div class="steps" v-for="item in 3" :key="item">
         <div class="form" v-if="step == item">
           <form>
-            {{ item }}
-
             <div class="step-01" v-if="item == 1">
               <div class="input-field">
                 <Dropdown
@@ -73,9 +73,85 @@
               </div>
             </div>
 
-            <div class="step-02"></div>
+            <div class="step-02" v-if="item == 2">
+              <PickList v-model="products" dataKey="name" class="picklist">
+                <template #sourceheader> Available </template>
+                <template #targetheader> Selected </template>
+                <template #item="slotProps">
+                  <div class="p-caritem">
+                    <div>
+                      <span class="p-caritem-vin">{{
+                        slotProps.item.name
+                      }}</span>
+                      <span
+                        >{{ slotProps.item.description }} -
+                        {{ slotProps.item.price }}</span
+                      >
+                    </div>
+                  </div>
+                </template>
+              </PickList>
+            </div>
 
-            <div class="step-03"></div>
+            <div class="step-03" v-if="item == 3">
+              <DataTable
+                :value="vaga_lista"
+                scrollable
+                scrollHeight="400px"
+                :virtualScrollerOptions="{ itemSize: 46 }"
+              >
+                <Column
+                  field="curso"
+                  header="Curso"
+                  style="min-width: '200px'"
+                ></Column>
+                <Column
+                  field="quantidadeVaga"
+                  header="Quantidade de Vaga"
+                  style="min-width: '200px'"
+                ></Column>
+                <Column
+                  field="dataAbertura"
+                  header="Data de Abertura"
+                  style="min-width: '200px'"
+                ></Column>
+                <Column
+                  field="dataFechamento"
+                  header="Data de Fechamento"
+                  style="min-width: '200px'"
+                ></Column>
+              </DataTable>
+
+              <Divider />
+
+              <DataTable
+                :value="products[1]"
+                scrollable
+                scrollHeight="400px"
+                :virtualScrollerOptions="{ itemSize: 46 }"
+              >
+                <Column
+                  field="id"
+                  header="Id"
+                  style="min-width: '200px'"
+                ></Column>
+                <Column
+                  field="name"
+                  header="Name"
+                  style="min-width: '200px'"
+                ></Column>
+                <Column
+                  field="description"
+                  header="Description"
+                  style="min-width: '200px'"
+                ></Column>
+                <Column
+                  field="price"
+                  header="Price"
+                  style="min-width: '200px'"
+                ></Column>
+              </DataTable>
+            </div>
 
             <div class="button-bottom">
               <Button
@@ -108,33 +184,76 @@ export default {
         { name: 'Mecatronica', code: '2' },
         { name: 'Artes', code: '3' },
       ],
+      products: [
+        [
+          {
+            id: '1000',
+            code: 'f230fh0g3',
+            name: 'Bamboo Watch',
+            description: 'Product Description',
+            image: 'bamboo-watch.jpg',
+            price: 65,
+            category: 'Accessories',
+            quantity: 24,
+            inventoryStatus: 'INSTOCK',
+            rating: 5,
+          },
+          {
+            id: '1001',
+            code: 'nvklal433',
+            name: 'Black Watch',
+            description: 'Product Description',
+            image: 'black-watch.jpg',
+            price: 72,
+            category: 'Accessories',
+            quantity: 61,
+            inventoryStatus: 'INSTOCK',
+            rating: 4,
+          },
+          {
+            id: '1002',
+            code: 'zz21cz3c1',
+            name: 'Blue Band',
+            description: 'Product Description',
+            image: 'blue-band.jpg',
+            price: 79,
+            category: 'Fitness',
+            quantity: 2,
+            inventoryStatus: 'LOWSTOCK',
+            rating: 3,
+          },
+          {
+            id: '1003',
+            code: '244wgerg2',
+            name: 'Blue T-Shirt',
+            description: 'Product Description',
+            image: 'blue-t-shirt.jpg',
+            price: 29,
+            category: 'Clothing',
+            quantity: 25,
+            inventoryStatus: 'INSTOCK',
+            rating: 5,
+          },
+        ],
+        [],
+      ],
       vaga: {
         curso: '',
         quantidadeVaga: '',
         dataAbertura: '',
         dataFechamento: '',
       },
+      vaga_lista: [],
       step: 1,
+      lista_titulo_step: ['Dados da Vaga', 'Dinâmicas', 'Confirmar Dados'],
     }
   },
   computed: {
     stepperProgress() {
-      return (100 / 3) * (this.step - 1) + '%'
+      return (100 / 2) * (this.step - 1) + '%'
     },
   },
   methods: {
-    complete() {
-      this.$toast.add({
-        severity: 'success',
-        summary: 'Order submitted',
-        detail:
-          'Dear, ' +
-          this.formObject.firstname +
-          ' ' +
-          this.formObject.lastname +
-          ' your order completed.',
-      })
-    },
     async enviarVaga() {
       console.log('Vaga antes do POST')
       console.log(this.vaga)
@@ -271,6 +390,12 @@ export default {
 }
 
 /* --------------------------------------------------------------------------------- */
+
+.picklist {
+  margin-top: 50px;
+}
+
+// ---------------------------------
 
 .form .input-field {
   position: relative;
@@ -433,16 +558,16 @@ export default {
     display: flex;
     position: absolute;
     justify-content: center;
-    font-size: 14px;
+    font-size: 18px;
     bottom: -24px;
-    width: 20%;
+    width: 25%;
   }
 }
 
 .stepper-item.success {
   .stepper-item-counter {
     border-color: #4070f4;
-    background-color: #d5d9e6;
+    background-color: #d4deff;
     color: #fff;
     font-weight: 600;
 
@@ -465,12 +590,12 @@ export default {
 .stepper-item.current {
   .stepper-item-counter {
     border-color: #4070f4;
-    background-color: #d5d9e6;
-    color: #fff;
+    background-color: #d4deff;
+    color: #4070f4;
     font-weight: 600;
 
     .stepper-item-title {
-      color: #4070f4;
+      color: #4070f4 !important;
     }
   }
 }
