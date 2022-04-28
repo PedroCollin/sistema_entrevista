@@ -3,7 +3,6 @@
     <div class="all">
       <br>
       <div class="all" v-if="auth">
-        <a href="../../auth/login" class="py-5 px-3" @click="logout">Logout</a>
       </div>
       <br>
       <h2>Bem vindo {{user.nome}}!</h2>
@@ -41,8 +40,8 @@ export default {
   },
   computed: {
     ...mapState({
-      user_session: (state) => state.user_session,
-      token: (state) => state.token,
+        user_session: (state) => state.user_session,
+        token: (state) => state.token,
     }),
   },
   methods: {

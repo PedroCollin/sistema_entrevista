@@ -1,20 +1,32 @@
 <template>
     <div class="mainDiv">
         <header class="header"></header>
-        <subheader class="subHeader">
-            <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
+        <div class="subHeader">
+            <a href="../../">
+                <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
+            </a>
             <div class="subDiv">
+
                 <Sidebar :visible.sync="visibleRight" position="right">
-                    <h3>Conteudo</h3>
+                    <a href="../../" class="py-5 px-3">HOME</a><br><br><br>
+                    <h3>Cadastros</h3><br>
+                    <a href="../../auth/register" class="py-5 px-3">Cadastrar Usuário</a><br><br><br>
+                    <a href="../../curso" class="py-5 px-3">Cadastrar Curso</a><br><br><br>
+                    <a href="../../dinamica" class="py-5 px-3">Cadastrar Dinâmica</a><br><br><br><br>
+                    <h3>Informações / Dúvidas</h3><br>
+                    <a href="..." class="py-5 px-3">Sobre o Sistema</a><br><br>
+                    <a href="..." class="py-5 px-3">FAQ</a><br><br><br><br><br><br><br><br>
+                    <a href="../../auth/login" class="py-5 px-3" @click="logout">SAIR</a>
                 </Sidebar>
 
                 <Button icon="pi pi-bars" @click="visibleRight = true" />
             </div>
-        </subheader>
+        </div>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 
 export default {
     props: [""],
@@ -23,13 +35,39 @@ export default {
         return {
             visibleRight: false,
         }
-    }
+    },
+    computed: {
+        ...mapState({
+            user_session: (state) => state.user_session,
+            token: (state) => state.token,
+        }),
+    },
+    methods: {
+        async logout() {
+        await fetch("http://127.0.0.1:8000/api/logout/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+        this.auth = false;
+        this.$store.commit("STORE_SESSION", {});
+        this.$store.commit("STORE_TOKEN", {});
+        await this.$router.push("/auth/login/");
+        },
+    },
 }
 </script>
 
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+a:hover {font-size:150%;}
+
+a, a:hover, a:focus, a:active {
+      text-decoration: none;
+      color: inherit;
+ }
 
 .header {
     width: 100%;

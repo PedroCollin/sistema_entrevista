@@ -1,4 +1,5 @@
 <template>
+    <!-- Colocar links de politica de privacidade, contato e FAQ -->
     <center>
         <div class="container">
             <div class="footer">
