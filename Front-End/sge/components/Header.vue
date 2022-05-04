@@ -2,17 +2,16 @@
     <div class="mainDiv">
         <header class="header"></header>
         <div class="subHeader">
-<<<<<<< HEAD
             <a href="../../">
                 <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             </a>
-=======
-            <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
->>>>>>> 07f7f544e753dc271df126d20f1666de46c51d28
             <div class="subDiv">
 
                 <Sidebar :visible.sync="visibleRight" position="right">
-                    <a href="../../" class="py-5 px-3">HOME</a><br><br><br>
+                    <a href="../../" class="py-5 px-3">
+                        <img class="HomeIcon" src = "../assets/images/house-solid.svg" alt="HomeIcon" width="20" height="15"/>
+                        HOME
+                    </a><br><br><br>
                     <h3>Cadastros</h3><br>
                     <a href="../../auth/register" class="py-5 px-3">Cadastrar Usuário</a><br><br><br>
                     <a href="../../curso" class="py-5 px-3">Cadastrar Curso</a><br><br><br>
@@ -68,10 +67,19 @@ export default {
 
 a:hover {font-size:150%;}
 
-a, a:hover, a:focus, a:active {
-      text-decoration: none;
-      color: inherit;
+a, a:hover, a:focus, a:active, a:hover img {
+    text-decoration: none;
+    color: inherit;
  }
+
+a:hover img{
+    transform: scale(1.5);
+}
+
+.HomeIcon {
+    margin-right: 10px;
+    
+}
 
 .header {
     width: 100%;

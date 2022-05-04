@@ -6,6 +6,7 @@
       </div>
       <br>
       <h2>Bem vindo {{user.nome}}!</h2>
+      <img src = "house-solid.svg" width=/>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
