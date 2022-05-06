@@ -94,31 +94,12 @@
             </div>
 
             <div class="step-03" v-if="item == 3">
-              <DataTable
-                :value="vaga_lista"
-                scrollable
-                scrollHeight="400px"
-                :virtualScrollerOptions="{ itemSize: 46 }"
-              >
+              <DataTable :value="[vaga]" responsiveLayout="scroll">
                 <Column
-                  field="curso"
-                  header="Curso"
-                  style="min-width: '200px'"
-                ></Column>
-                <Column
-                  field="quantidadeVaga"
-                  header="Quantidade de Vaga"
-                  style="min-width: '200px'"
-                ></Column>
-                <Column
-                  field="dataAbertura"
-                  header="Data de Abertura"
-                  style="min-width: '200px'"
-                ></Column>
-                <Column
-                  field="dataFechamento"
-                  header="Data de Fechamento"
-                  style="min-width: '200px'"
+                  v-for="col of columns_dados_vaga"
+                  :field="col.field"
+                  :header="col.header"
+                  :key="col.field"
                 ></Column>
               </DataTable>
 
@@ -160,11 +141,15 @@
                 @click="step--"
                 :disabled="step == 1"
               ></Button>
-              <Button
+              <Button v-if="item != 3"
                 label="Seguinte"
                 class="p-button-raised p-button-primary"
                 @click="step++"
-                :disabled="step == 3"
+              ></Button>
+              <Button v-if="item == 3"
+                label="Registrar vaga"
+                class="p-button-raised p-button-success"
+                @click="enviarVaga"
               ></Button>
             </div>
           </form>
@@ -243,10 +228,18 @@ export default {
         dataAbertura: '',
         dataFechamento: '',
       },
-      vaga_lista: [],
+      columns_dados_vaga: null,
       step: 1,
       lista_titulo_step: ['Dados da Vaga', 'Dinâmicas', 'Confirmar Dados'],
     }
+  },
+  created() {
+    this.columns_dados_vaga = [
+      { field: 'curso', header: 'Curso' },
+      { field: 'quantidadeVaga', header: 'Vagas' },
+      { field: 'dataAbertura', header: 'Data abertura' },
+      { field: 'dataFechamento', header: 'Data final' },
+    ]
   },
   computed: {
     stepperProgress() {
@@ -397,11 +390,13 @@ export default {
 
 // ---------------------------------
 
-.form .input-field {
-  position: relative;
-  height: 35px;
-  width: 100%;
-  margin-top: 50px;
+.form {
+  .input-field {
+    position: relative;
+    height: 35px;
+    width: 100%;
+    margin-top: 50px;
+  }
 }
 
 .input-field input {
