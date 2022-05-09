@@ -1,8 +1,5 @@
 <template>
     <div class="container">
-        <!-- Maximum call stack size exceeded (template dentro de template talvez), ver se existe alguma função recursiva
-             Impedindo o card de funcionar corretamente. Maximum call stack size exceeded é excesso de chamada de função -->
-             
         <Card>
             <template #header>
                 <img alt="user header" src="demo/images/usercard.png">

@@ -6,7 +6,6 @@
       </div>
       <br>
       <h2>Bem vindo {{user.nome}}!</h2>
-      <img src = "house-solid.svg" width=/>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
@@ -47,7 +46,7 @@ export default {
   },
   methods: {
     async logout() {
-      await fetch("http://127.0.0.1:8000/api/logout/", {
+      await fetch("http://127.0.0.1:8000/api/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

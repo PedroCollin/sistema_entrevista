@@ -78,7 +78,6 @@ export default {
 
 .HomeIcon {
     margin-right: 10px;
-    
 }
 
 .header {
