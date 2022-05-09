@@ -2,7 +2,7 @@
     <div class="mainDiv">
         <header class="header"></header>
         <div class="subHeader">
-            <a href="../../">
+            <a class="ignore-css" href="../../">
                 <img class="BoschLogo" src="../assets/images/BoschLogo.png" alt="Logo Bosch">
             </a>
             <div class="subDiv">
@@ -65,14 +65,14 @@ export default {
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-a:hover {font-size:150%;}
+.py-5.px-3:hover {font-size:150%;}
 
-a, a:hover, a:focus, a:active, a:hover img {
+.py-5.px-3, .py-5.px-3:hover, .py-5.px-3:focus, .py-5.px-3:active, .py-5.px-3:hover img {
     text-decoration: none;
     color: inherit;
  }
 
-a:hover img{
+.py-5.px-3:hover img{
     transform: scale(1.5);
 }
 
@@ -89,7 +89,6 @@ a:hover img{
     left: 0;
     top: 0;
     right: 0;
-    
     height: 0.7rem;
     display: flex;
 }
