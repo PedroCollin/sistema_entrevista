@@ -64,7 +64,11 @@ export default {
       "Steps",
       "Sidebar",
       "PickList",
-
+      "Carousel",
+      "TabView",
+      "TabPanel",
+      "Accordion",
+      "AccordionTab",
     ]
   },
 }

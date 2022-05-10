@@ -17,7 +17,7 @@
                     <a href="../../curso" class="py-5 px-3">Cadastrar Curso</a><br><br><br>
                     <a href="../../dinamica" class="py-5 px-3">Cadastrar Dinâmica</a><br><br><br><br>
                     <h3>Informações / Dúvidas</h3><br>
-                    <a href="..." class="py-5 px-3">Sobre o Sistema</a><br><br>
+                    <a href="../../sobre" class="py-5 px-3">Sobre o Sistema</a><br><br>
                     <a href="..." class="py-5 px-3">FAQ</a><br><br><br><br><br><br><br><br>
                     <a href="../../auth/login" class="py-5 px-3" @click="logout">SAIR</a>
                 </Sidebar>
