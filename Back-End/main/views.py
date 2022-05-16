@@ -227,7 +227,7 @@ class Resposta_Dinamica_API(APIView):
         else:
 
             sort = request.GET.get('sort')
-            _respDinamica = RespostaDinamica.objects.filter(vagaDinamica=pk)
+            _respDinamica = RespostaDinamica.objects.filter(candidato=pk)
 
             if sort == 'desc':
                 _respDinamica = _respDinamica.order_by('-candidato_id')
@@ -287,13 +287,9 @@ class Curso_API(APIView):
             return Response(serializer.data)
 
     def post(self, request):
-        print(request.data)
         serializer = CursoSerializer(data=request.data, many=True)
-        print('a')
         serializer.is_valid(raise_exception=True)
-        print('b')
         serializer.save()
-        print('c')
         return Response({"msg": "Inserido com sucesso"})
         #return Response({"id": serializer.data['id']})
 
@@ -322,12 +318,11 @@ class Vaga_API(APIView):
             return Response(serializer.data)
 
     def post(self, request):
-        print('testeVAGA')
-        print(request.data)
         serializer = VagaSerializerSALVAR(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"msg": "Inserido com sucesso"})
+        print(serializer.data)
+        return Response(serializer.data)
         #return Response({"id": serializer.data['id']})
 
     def put(self, request, pk=''):
@@ -341,6 +336,13 @@ class Vaga_API(APIView):
         vaga = Vaga.objects.get(id=pk)
         vaga.delete()
         return Response({"msg": "Apagado com sucesso"})
+
+
+class CandidatoUnique_API(APIView):
+    def get(self, request, pk=''):
+        _candidato = Candidato.objects.filter(id=pk)
+        serializer = CandidatoSerializerLER(_candidato, many=True)
+        return Response(serializer.data)
 
 
 class Candidato_API(APIView):

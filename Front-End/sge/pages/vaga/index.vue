@@ -36,8 +36,8 @@
                   class="dropdown"
                   v-model="vaga.curso"
                   :options="cursos"
-                  option-value="code"
-                  optionLabel="name"
+                  option-value="id"
+                  optionLabel="titulo"
                   placeholder="Selecione um curso"
                 />
               </div>
@@ -74,19 +74,16 @@
             </div>
 
             <div class="step-02" v-if="item == 2">
-              <PickList v-model="products" dataKey="name" class="picklist">
-                <template #sourceheader> Available </template>
-                <template #targetheader> Selected </template>
+              <PickList v-model="products" dataKey="titulo" class="picklist">
+                <template #sourceheader> Disponivel </template>
+                <template #targetheader> Selecionado </template>
                 <template #item="slotProps">
                   <div class="p-caritem">
                     <div>
                       <span class="p-caritem-vin">{{
-                        slotProps.item.name
+                        slotProps.item.titulo
                       }}</span>
-                      <span
-                        >{{ slotProps.item.description }} -
-                        {{ slotProps.item.price }}</span
-                      >
+                      <span> {{ slotProps.item.duracao }}</span>
                     </div>
                   </div>
                 </template>
@@ -112,23 +109,13 @@
                 :virtualScrollerOptions="{ itemSize: 46 }"
               >
                 <Column
-                  field="id"
-                  header="Id"
+                  field="titulo"
+                  header="Titulo"
                   style="min-width: '200px'"
                 ></Column>
                 <Column
-                  field="name"
-                  header="Name"
-                  style="min-width: '200px'"
-                ></Column>
-                <Column
-                  field="description"
-                  header="Description"
-                  style="min-width: '200px'"
-                ></Column>
-                <Column
-                  field="price"
-                  header="Price"
+                  field="duracao"
+                  header="Duração"
                   style="min-width: '200px'"
                 ></Column>
               </DataTable>
@@ -141,12 +128,14 @@
                 @click="step--"
                 :disabled="step == 1"
               ></Button>
-              <Button v-if="item != 3"
+              <Button
+                v-if="item != 3"
                 label="Seguinte"
                 class="p-button-raised p-button-primary"
                 @click="step++"
               ></Button>
-              <Button v-if="item == 3"
+              <Button
+                v-if="item == 3"
                 label="Registrar vaga"
                 class="p-button-raised p-button-success"
                 @click="enviarVaga"
@@ -164,64 +153,8 @@ export default {
   data() {
     return {
       selectedCurso: null,
-      cursos: [
-        { name: 'Smart Automation', code: '1' },
-        { name: 'Mecatronica', code: '2' },
-        { name: 'Artes', code: '3' },
-      ],
-      products: [
-        [
-          {
-            id: '1000',
-            code: 'f230fh0g3',
-            name: 'Bamboo Watch',
-            description: 'Product Description',
-            image: 'bamboo-watch.jpg',
-            price: 65,
-            category: 'Accessories',
-            quantity: 24,
-            inventoryStatus: 'INSTOCK',
-            rating: 5,
-          },
-          {
-            id: '1001',
-            code: 'nvklal433',
-            name: 'Black Watch',
-            description: 'Product Description',
-            image: 'black-watch.jpg',
-            price: 72,
-            category: 'Accessories',
-            quantity: 61,
-            inventoryStatus: 'INSTOCK',
-            rating: 4,
-          },
-          {
-            id: '1002',
-            code: 'zz21cz3c1',
-            name: 'Blue Band',
-            description: 'Product Description',
-            image: 'blue-band.jpg',
-            price: 79,
-            category: 'Fitness',
-            quantity: 2,
-            inventoryStatus: 'LOWSTOCK',
-            rating: 3,
-          },
-          {
-            id: '1003',
-            code: '244wgerg2',
-            name: 'Blue T-Shirt',
-            description: 'Product Description',
-            image: 'blue-t-shirt.jpg',
-            price: 29,
-            category: 'Clothing',
-            quantity: 25,
-            inventoryStatus: 'INSTOCK',
-            rating: 5,
-          },
-        ],
-        [],
-      ],
+      cursos: [],
+      products: [[], []],
       vaga: {
         curso: '',
         quantidadeVaga: '',
@@ -234,12 +167,18 @@ export default {
     }
   },
   created() {
-    this.columns_dados_vaga = [
+    ;(this.columns_dados_vaga = [
       { field: 'curso', header: 'Curso' },
       { field: 'quantidadeVaga', header: 'Vagas' },
       { field: 'dataAbertura', header: 'Data abertura' },
       { field: 'dataFechamento', header: 'Data final' },
-    ]
+    ]),
+      this.$axios.$get('main/curso').then((response) => {
+        this.cursos = response
+      }),
+      this.$axios.$get('main/dinamica').then((response) => {
+        this.products[0] = response
+      })
   },
   computed: {
     stepperProgress() {
@@ -247,9 +186,7 @@ export default {
     },
   },
   methods: {
-    async enviarVaga() {
-      console.log('Vaga antes do POST')
-      console.log(this.vaga)
+    enviarVaga: async function () {
       if (
         this.vaga.curso == '' ||
         this.vaga.quantidadeVaga == '' ||
@@ -281,7 +218,8 @@ export default {
               ]),
             }
           )
-          console.log(responseToken)
+          const vaga = await responseToken.json()
+
           if (responseToken.status != '200') {
             this.$toast.add({
               severity: 'error',
@@ -290,6 +228,23 @@ export default {
               life: 3000,
             })
           } else {
+            for (const key in this.products[1]) {
+              const dinamica = this.products[1][key]
+              const responseTokenDinamica = await fetch(
+                'http://127.0.0.1:8000/api/main/vagaDinamica/',
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify([
+                    {
+                      vaga: vaga[0].id,
+                      dinamica: dinamica.id,
+                    },
+                  ]),
+                }
+              )
+            }
             this.$toast.add({
               severity: 'success',
               summary: 'Vaga cadastrada com sucesso',
@@ -301,8 +256,10 @@ export default {
             this.vaga.dataAbertura = ''
             this.vaga.quantidadeVaga = ''
             this.vaga.dataFechamento = ''
+
+            this.products[1] = []
+            this.step = 1
           }
-          console.log(responseToken)
         } catch (error) {
           this.$toast.add({
             severity: 'error',
@@ -592,6 +549,15 @@ export default {
     .stepper-item-title {
       color: #4070f4 !important;
     }
+  }
+}
+
+@media screen and (max-width: 1900px) {
+  .p-picklist {
+    display: flex;
+    background-color: #2e5fe7;
+    flex-direction: column;
+
   }
 }
 
