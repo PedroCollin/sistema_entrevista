@@ -1,22 +1,12 @@
 <template>
     <div>
         <div>
-            <Carousel :value="cars" :numVisible="4" :numScroll="3" :responsiveOptions="responsiveOptions">
+            <Carousel :value="imgs" :numVisible="4" :numScroll="3" :responsiveOptions="responsiveOptions">
                 <template #item="slotProps">
                     <div class="car-item">
                         <div class="car-content">
                             <div>
-                                <img :src="'demo/images/car/' + slotProps.data.brand + '.png'" :alt="slotProps.data.brand" />
-                            </div>
-                            <div>
-                                <div class="car-title">{{slotProps.data.brand}}</div>
-                                <div class="car-subtitle">{{slotProps.data.year}} | {{slotProps.data.color}}</div>
-
-                                <div class="car-buttons">
-                                    <Button icon="pi pi-search" class="p-button-secondary" />
-                                    <Button icon="pi pi-star-fill" class="p-button-secondary" />
-                                    <Button icon="pi pi-cog" class="p-button-secondary" />
-                                </div>
+                                <img class="carousel-style" :src="slotProps.data.src"/>
                             </div>
                         </div>
                     </div>
@@ -25,12 +15,19 @@
         </div>
         <div>
             <TabView>
-                <TabPanel header="Header I">
-                    Testes
+                <TabPanel header="Passo a Passo">
+                    <div class="card">
+                        <h5>Right Align</h5>
+                        <Timeline :value="events1" align="right">
+                            <template #content="slotProps">
+                                {{slotProps.item.status}}
+                            </template>
+                        </Timeline>
+                    </div>
                 </TabPanel>
-                <TabPanel header="Header II">
+                <TabPanel header="Perguntas Frequentes">
                     <Accordion>
-                        <AccordionTab header="Header I">
+                        <AccordionTab header="Testes">
                             Content
                         </AccordionTab>
                         <AccordionTab header="Header II">
@@ -68,11 +65,29 @@ export default {
                     numVisible: 1,
                     numScroll: 1
 			    }
-		    ]
+		    ],
+            events1: [
+                {status: 'Ordered', date: '15/10/2020 10:30', icon: 'pi pi-shopping-cart', color: '#9C27B0', image: 'game-controller.jpg'},
+                {status: 'Processing', date: '15/10/2020 14:00', icon: 'pi pi-cog', color: '#673AB7'},
+                {status: 'Shipped', date: '15/10/2020 16:15', icon: 'pi pi-shopping-cart', color: '#FF9800'},
+                {status: 'Delivered', date: '16/10/2020 10:00', icon: 'pi pi-check', color: '#607D8B'}
+            ],
+            imgs:[
+                {
+                    src:"teste1.jpg",
+                },
+                {
+                    src:"homoge.jpg",
+                }
+            ]
 	    }
     }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.carousel-style{
+    height: 60vh;
+    width: 200vh;
+}
 </style>

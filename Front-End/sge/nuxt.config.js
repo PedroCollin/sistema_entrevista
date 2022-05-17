@@ -69,6 +69,7 @@ export default {
       "TabPanel",
       "Accordion",
       "AccordionTab",
+      "Timeline",
     ]
   },
 }
