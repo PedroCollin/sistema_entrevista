@@ -70,6 +70,7 @@ export default {
       "Accordion",
       "AccordionTab",
       "Timeline",
+      "Toolbar",
     ]
   },
 }
