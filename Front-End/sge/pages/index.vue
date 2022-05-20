@@ -5,7 +5,7 @@
       <div class="all" v-if="auth">
       </div>
       <br>
-      <h2>Bem vindo {{user.nome}}!</h2>
+      <h2>Bem vindo {{user.email}}!</h2>
     </div>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
