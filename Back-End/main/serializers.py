@@ -100,6 +100,8 @@ class RespostaDinamicaSerializerLER(serializers.ModelSerializer):
     print(serializers.ModelSerializer)
     usuario = UserSerializer(read_only=True)
     candidato = CandidatoSerializerLER(read_only=True)
+    vagaDinamica = VagaDinamicaSerializerLER(read_only=True)
+    
     class Meta:
         model = RespostaDinamica
         fields = '__all__'
