@@ -30,11 +30,10 @@
 .container .forms{
     display: flex;
     align-items: center;
-    height: 440px;
+    height: 400px;
     width: 200%;
     transition: height 0.2s ease;
 }
-
 
 .container .form{
     width: 50%;

@@ -13,8 +13,6 @@
                     <a class="opcao1" href="" style="text-decoration: none; color: inherit">Política de Privacidade</a>
                     <h3 class="separador"> - </h3>
                     <a class="opcao2" href="" style="text-decoration: none; color: inherit">Entre em Contato</a>
-                    <h3 class="separador"> - </h3>
-                    <a class="opcao3" href="" style="text-decoration: none; color: inherit">FAQ</a>
                 </div>
             </div>
         </div>
@@ -97,6 +95,7 @@ export default {
     }
 
     .opcao1 {
+        margin-left: 24rem;
         margin-right: 2rem;
     }
 

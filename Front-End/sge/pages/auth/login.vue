@@ -35,14 +35,7 @@
               <input type="submit" value="Login" />
             </div>
           </form>
-
-          <!-- Só pra linkar nos cadastros, pode tirar -->
-           <div class="login-signup">       
-              <a href="../../auth/register" class="text signup-link">Cadastro Colaborador</a>
-              <a href="../../auth/registercand" class="text signup-link">Cadastro Candidato</a>
-          </div> 
-          <!-- ------------------------------------------>
-
+          
         </div>
       </div>
     </div>

@@ -71,6 +71,7 @@ export default {
       "AccordionTab",
       "Timeline",
       "Toolbar",
+      "Carousel",
     ]
   },
 }

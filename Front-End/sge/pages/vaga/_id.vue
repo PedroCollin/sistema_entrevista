@@ -11,7 +11,7 @@
                 icon="pi pi-plus"
                 class="p-button-success mr-2"
                 @click="openNew"
-              />
+              />  
               <Button
                 label="Delete"
                 icon="pi pi-trash"
