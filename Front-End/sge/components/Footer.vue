@@ -34,11 +34,12 @@ export default {
         margin-top: auto;
         height: auto;
         bottom: 0;
+        border-top: 1px solid rgb(238, 238, 238);
         padding: 10px 10px 10px 10px;
         width: 100%;
         background-color: rgb(255, 255, 255);
         font-family: 'Roboto', sans-serif;
-        font-size: 16px;
+        font-size: 10px;
     }
 
     .colunaEsquerda {
@@ -58,6 +59,10 @@ export default {
     .opcao1 {
         margin-top: 2vh;
     }
+
+    /* .opcao2 {
+        width: 100%;
+    } */
 }
 
 @media screen and (min-width: 1000px){
@@ -66,6 +71,7 @@ export default {
         height: auto;
         bottom: 0;
         display: flex;
+        border-top: 1px solid rgb(241, 241, 241);
         padding: 10px 10px 10px 10px;
         width: 100%;
         background-color: rgb(255, 255, 255);
@@ -101,10 +107,6 @@ export default {
 
     .opcao2 {
         margin-right: 2rem;
-        margin-left: 2rem;
-    }
-
-    .opcao3 {
         margin-left: 2rem;
     }
 

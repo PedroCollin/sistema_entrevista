@@ -64,14 +64,16 @@ export default {
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
-.py-5.px-3:hover {font-size:150%;}
-
 .py-5.px-3, .py-5.px-3:hover, .py-5.px-3:focus, .py-5.px-3:active, .py-5.px-3:hover img {
     text-decoration: none;
     color: inherit;
  }
 
-.py-5.px-3:hover img{
+.py-5.px-3:hover {
+    color: red;
+}
+
+.py-5.px-3:hover img{   
     transform: scale(1.5);
 }
 
@@ -119,6 +121,8 @@ export default {
 }
 
 .mainDiv {
+    height: 75px;
+    border-bottom: 1px solid rgb(238, 238, 238);
     background-color: #ffffff;
 }
 

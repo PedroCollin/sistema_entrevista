@@ -1,28 +1,30 @@
 <template>
-  <div class="carrossel">
-    <Carousel :value="cursosObj" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions">
-      <template #header>
-          <h2>Cursos Cadastrados</h2>
-      </template>
-      <template #item="slotProps">
-          <div class="product-item">
-              <div class="product-item-content">
-                  <div class="mb-3">
-                      <img :src="'demo/images/product/' + slotProps.curso.titulo" :alt="slotProps.curso.titulo" class="imagem-curso" />
-                  </div>
-                  <div>
-                      <h4 class="mb-1">{{slotProps.curso.titulo}}</h4>
-                      <h6 class="mt-0 mb-3">${{slotProps.curso.descricao}}</h6>
-                      <div class="car-buttons mt-5">
-                          <Button icon="pi pi-search" class="p-button p-button-rounded mr-2" />
-                          <Button icon="pi pi-star-fill" class="p-button-success p-button-rounded mr-2" />
-                          <Button icon="pi pi-cog" class="p-button-help p-button-rounded" />
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </template>
-    </Carousel>
+  <div class="mainContent">
+    <div class="tituloCarrossel">
+      <h3>VAGAS</h3>
+    </div>
+    <div class="carrossel">
+      <Carousel :value="cursosObj" :numVisible="3" :numScroll="3" :circular="true" :responsiveOptions="responsiveOptions">
+        <template #item="slotProps">
+            <div class="product-item">
+                <div class="product-item-content">
+                    <div class="mb-3">
+                        <img src="../assets/images/manufacture_like_a_bosch_1.jpg" width="480px" height="420px"/>
+                    </div>
+                    <div class="cardCursos">
+                        <h4 class="mb-1">{{slotProps.data.curso.titulo}}</h4>
+                        <h6 class="mt-0 mb-3">{{slotProps.data.curso.titulo}}</h6>
+                        <div class="car-buttons mt-5">
+                            <Button class="p-button-danger mr-2">Candidatos</Button>
+                            <Button class="p-button mr-2">Dinâmicas</Button>
+                            <Button class="p-button-success">Entrevista</Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+      </Carousel>
+    </div>
   </div>
 </template>
 
@@ -55,6 +57,7 @@ export default {
 		  ]
     };
   },
+
   async mounted() {
    
     this.$nuxt.$on("auth", (auth) => {
@@ -63,6 +66,7 @@ export default {
     
     this.user = this.$store.state.user_session
   },
+
   created(){
     if(this.$store.state.user_session.id != null) {
       this.auth = true
@@ -70,13 +74,19 @@ export default {
     else{
       this.$router.push('/auth/login/');
     }
+    this.$axios.$get('main/vaga').then((response) => {
+        this.cursosObj = response
+        console.log(this.cursoObj)
+    })
   },
+
   computed: {
     ...mapState({
         user_session: (state) => state.user_session,
         token: (state) => state.token,
     }),
   },
+
   methods: {
     async logout() {
       await fetch("http://127.0.0.1:8000/api/logout", {
@@ -88,61 +98,41 @@ export default {
       this.$store.commit("STORE_SESSION", {});
       this.$store.commit("STORE_TOKEN", {});
       await this.$router.push("/auth/login/");
-    },
-    
-    async getCursos() {
-      const response = await fetch("http://127.0.0.1:8000/api/main/curso");
-      const data = await response.json();
-      this.cursosObj = data.map((curso) => {
-        return {
-          id: curso.id,
-          titulo: curso.titulo,
-          descricao: curso.descricao,
-          periodo: curso.periodo,
-          carga_horaria: curso.carga_horaria,
-          imgCurso: curso.imgCurso,
-        };
-      });
-      return cursosObj;
-    },
-
-    // async cursos(){
-    //   const response = await this.$http.get('/api/cursos');
-    //   const cursos = response.data;
-    //   const cursosObj = cursos.map(curso => {
-    //     return {
-    //       titulo: curso.titulo,
-    //       descricao: curso.descricao,
-    //       periodo: curso.periodo,
-    //       carga_horaria: curso.carga_horaria,
-    //     };
-    //   });
-    //   return cursosObj;
-    // },
+    }
   },
 };
 </script>
 
-<style scoped>
+<style>
 
-.container{
-  background-color: rgb(248, 248, 248);
-  align-content: center;
-  justify-content: center;
+.product-item .product-item-content {
+  border: 1px solid var(--surface-border);
+  border-radius: 3px;
+  margin: .3rem;
+  text-align: center;
+  padding: 2rem 0;
 }
 
-.all{ 
+.product-item .product-image {
+  width: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
+.carrossel {
+  margin-top:8px;
+  margin-bottom: 47px;
+}
+
+.tituloCarrossel {
   justify-content: center;
   align-content: center;
   align-items: center;
-  margin-left: 45%;
-}
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 35px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
 
-.p-carousel {
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  margin-top: 8vh;
 }
 
 </style>
