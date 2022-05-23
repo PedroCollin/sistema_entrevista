@@ -557,7 +557,6 @@ export default {
     display: flex;
     background-color: #2e5fe7;
     flex-direction: column;
-
   }
 }
 

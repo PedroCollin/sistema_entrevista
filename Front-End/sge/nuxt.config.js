@@ -75,6 +75,7 @@ export default {
       "Dialog",
       "FileUpload",
       "Rating",
+      "MultiSelect",
     ]
   },
 }
