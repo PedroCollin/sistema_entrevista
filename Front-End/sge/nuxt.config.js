@@ -72,6 +72,9 @@ export default {
       "Timeline",
       "Toolbar",
       "Carousel",
+      "Dialog",
+      "FileUpload",
+      "Rating",
     ]
   },
 }

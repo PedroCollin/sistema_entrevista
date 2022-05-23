@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <div class="all">
       <div class="all" v-if="auth">
         <!-- START -->
         <div class="card">
@@ -42,11 +41,10 @@
           <DataTable
             ref="dt"
             :value="products"
-            v-model:selection="selectedProducts"
+            :v-model:selection="selectedProducts"
             dataKey="id"
             :paginator="true"
-            :rows="10"
-            :filters="filters"
+            :rows="3"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             :rowsPerPageOptions="[5, 10, 25]"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -64,7 +62,7 @@
                 <span class="p-input-icon-left">
                   <i class="pi pi-search" />
                   <InputText
-                    v-model="filters['global'].value"
+
                     placeholder="Search..."
                   />
                 </span>
@@ -167,7 +165,7 @@
           :style="{ width: '450px' }"
           header="Product Details"
           :modal="true"
-          class="p-fluid"
+          class="p-fluid" 
         >
           <img
             src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
@@ -373,7 +371,6 @@
         <!-- END -->
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -385,7 +382,28 @@ export default {
     return {
       auth: false,
       user: '',
-      products: [
+      products: [],
+      productDialog: false,
+      deleteProductDialog: false,
+      deleteProductsDialog: false,
+      product: {},
+      selectedProducts: null,
+      submitted: false,
+      statuses: [
+        { label: 'INSTOCK', value: 'instock' },
+        { label: 'LOWSTOCK', value: 'lowstock' },
+        { label: 'OUTOFSTOCK', value: 'outofstock' },
+      ],
+    }
+  },
+  async mounted() {
+    this.$nuxt.$on('auth', (auth) => {
+      this.auth = auth
+    })
+
+    this.user = this.$store.state.user_session
+
+    this.products = [
         {
           id: '1000',
           code: 'f230fh0g3',
@@ -446,28 +464,7 @@ export default {
           inventoryStatus: 'INSTOCK',
           rating: 4,
         },
-      ],
-      productDialog: false,
-      deleteProductDialog: false,
-      deleteProductsDialog: false,
-      product: {},
-      selectedProducts: null,
-      submitted: false,
-      statuses: [
-        { label: 'INSTOCK', value: 'instock' },
-        { label: 'LOWSTOCK', value: 'lowstock' },
-        { label: 'OUTOFSTOCK', value: 'outofstock' },
-      ],
-    }
-  },
-  async mounted() {
-    this.$nuxt.$on('auth', (auth) => {
-      this.auth = auth
-    })
-
-    this.user = this.$store.state.user_session
-
-    // puxar da api os dados dos concorrentes
+      ]
   },
   created() {
     if (this.$store.state.user_session.id != null) {
@@ -487,6 +484,7 @@ export default {
       return
     },
     openNew() {
+      console.log('open')
       this.product = {}
       this.submitted = false
       this.productDialog = true
@@ -603,7 +601,7 @@ export default {
   justify-content: center;
   align-content: center;
   align-items: center;
-  margin-left: 45%;
+
 }
 
 // ------------------------------------------------------------ PRIMEVUE
