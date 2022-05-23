@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import *
-# Register your models here.
 
 # class detCurso(admin.ModelAdmin):
 #     list_display = ('id','titulo', 'descricao','data_inicio', 'data_termino')
@@ -40,5 +39,3 @@ admin.site.register(Vaga)
 admin.site.register(VagaDinamica)
 admin.site.register(AvaliacaoDinamica)
 admin.site.register(RespostaDinamica)
-
-

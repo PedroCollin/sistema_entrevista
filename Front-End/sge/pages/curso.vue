@@ -29,7 +29,7 @@
                 type="number"
                 step="2"
                 class="hora"
-                placeholder="Carga horaria"
+                placeholder="Carga Horária"
                 v-model="curso.carga_horaria"
                 required
               />
@@ -42,7 +42,7 @@
               id="textarea"
               rows="5"
               cols="90"
-              placeholder="Descreva a dinâmica aqui"
+              placeholder="Descrição do Curso"
               class="descricao"
               v-model="curso.descricao"
             ></Textarea>

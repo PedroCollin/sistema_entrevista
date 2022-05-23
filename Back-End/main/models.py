@@ -16,7 +16,6 @@ class Curso(models.Model):
     carga_horaria = models.IntegerField(blank=True, null=True)
     imgCurso = models.ImageField(upload_to='cursos/', blank=True, null=True)
 
-
     def __str__(self):
         return self.titulo
 

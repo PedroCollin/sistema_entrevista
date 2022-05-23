@@ -2,7 +2,7 @@
     <div>
         <div>
             <TabView>
-                <TabPanel header="Passo a Passo">
+                <TabPanel header="Guia de Utilização">
                     <div class="card">
                         <Timeline :value="events1">
                             <template #opposite="slotProps">
@@ -36,6 +36,7 @@
         </div>
     </div>   
 </template>
+
 <script>
 export default {
     data() {
@@ -75,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 .card{
-    margin-bottom: 10.6vh;
+    margin-bottom: 8.5vh;
     margin-top: 5vh;
     margin-left: 20vh;
 }
