@@ -14,7 +14,11 @@ class Curso(models.Model):
     descricao = models.TextField(blank=True)
     periodo = models.CharField(max_length=255, blank=True)
     carga_horaria = models.IntegerField(blank=True, null=True)
+<<<<<<< HEAD
     # imgCurso = models.ImageField(upload_to='cursos/', blank=True, null=True)
+=======
+    # imgCurso = models.ImageField(upload_to='cursos/', blank=True, null=True, default='')
+>>>>>>> 3a59da6b00b2181afc8e29b74530ca86c8a4aec5
 
     def __str__(self):
         return self.titulo
