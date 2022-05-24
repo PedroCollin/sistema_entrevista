@@ -15,7 +15,7 @@
                         <h4 class="mb-1">{{slotProps.data.curso.titulo}}</h4>
                         <h6 class="mt-0 mb-3">{{slotProps.data.curso.titulo}}</h6>
                         <div class="car-buttons mt-5">
-                            <Button class="p-button-danger mr-2">Candidatos</Button>
+                            <NuxtLink :to="'/vaga/candidatos/' + slotProps.data.id"><Button class="p-button-danger mr-2">Candidatos</Button></NuxtLink>
                             <Button class="p-button mr-2">Dinâmicas</Button>
                             <Button class="p-button-success">Entrevista</Button>
                         </div>

@@ -23,11 +23,13 @@
           <template #end>
             <FileUpload
               mode="basic"
-              accept="csv/*"
+              accept=".csv"
               :maxFileSize="1000000"
               label="Import"
               chooseLabel="Import"
               class="mr-2 inline-block"
+              :customUpload="true"
+              @uploader="myUploader"
             />
             <Button
               label="Export"
@@ -45,6 +47,7 @@
           dataKey="id"
           :paginator="true"
           :rows="5"
+          :filters="filters"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 15]"
           currentPageReportTemplate="Pagina {first} de {last} de total de {totalRecords} candidatos"
@@ -54,10 +57,13 @@
             <div
               class="table-header flex flex-column md:flex-row md:justiify-content-between"
             >
-              <h5 class="mb-2 md:m-0 p-as-md-center">Gerenciar Candidatos</h5>
+              <h2 class="mb-2 md:m-0 p-as-md-center">Gerenciar Candidatos</h2>
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
-                <InputText placeholder="Search..." />
+                <InputText
+                  v-model="filters['global'].value"
+                  placeholder="Search..."
+                />
               </span>
             </div>
           </template>
@@ -213,7 +219,8 @@
         <div class="confirmation-content">
           <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
           <span v-if="candidato"
-            >Tem certeza que deseja deletar este candidato <b>{{ candidato.nome }}</b
+            >Tem certeza que deseja deletar este candidato
+            <b>{{ candidato.nome }}</b
             >?</span
           >
         </div>
@@ -228,7 +235,7 @@
             label="Yes"
             icon="pi pi-check"
             class="p-button-text"
-            @click="deleteCandidato"
+            @click="deleteCandidato(candidato.id)"
           />
         </template>
       </Dialog>
@@ -267,6 +274,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { FilterMatchMode } from 'primevue/api'
+import imageCompression from "browser-image-compression";
 
 export default {
   layout: 'default',
@@ -279,9 +288,12 @@ export default {
       deleteCandidatoDialog: false,
       deleteCandidatosDialog: false,
       candidato: {},
+      filters: {},
       bool_editCandidato: false,
       selectedCandidatos: null,
       submitted: false,
+      fileCSV: null,
+      idVaga: 0,
       cidades: [
         { nome: 'Campinas', id: '0' },
         { nome: 'Sumare', id: '1' },
@@ -293,16 +305,19 @@ export default {
     this.$nuxt.$on('auth', (auth) => {
       this.auth = auth
     })
+    this.idVaga = this.$route.fullPath.replace(/^\D+/g, '')
+    // console.log(this.$route.params.slug)
+    console.log(this.idVaga)
 
     this.user = this.$store.state.user_session
 
-    this.$axios.$get('main/candidato/1').then((response) => {
+    this.$axios.$get('main/candidato/' + this.idVaga).then((response) => {
       this.candidatos = response
       console.log(response)
     })
-
   },
   created() {
+    this.initFilters()
     if (this.$store.state.user_session.id != null) {
       this.auth = true
     } else {
@@ -332,27 +347,63 @@ export default {
     },
     saveCandidato() {
       this.submitted = true
-
+      console.log(this.candidatos)
       if (this.candidato.nome) {
         if (this.bool_editCandidato) {
-          this.candidatos[this.findIndexById(this.candidato.id)] = this.candidato
+          this.candidatos[this.findIndexById(this.candidato.id)] =
+            this.candidato
+
+          this.$axios
+            .put('main/candidato/' + this.candidato.id + '/', {
+              nome: this.candidato.nome,
+              email: this.candidato.email,
+              rg: this.candidato.rg,
+              cpf: this.candidato.cpf,
+              cidade: this.candidato.cidade.id,
+              vaga: this.idVaga,
+            })
+            .then(function (response) {
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+
           this.$toast.add({
             severity: 'success',
             summary: 'Successful',
             detail: 'Candidato Atualizado',
-            life: 3000,
+            life: 5000,
           })
-        
         } else {
           this.candidato.image = 'products-placeholder.svg'
-          this.candidato.vaga = 1
+          this.candidato.vaga = this.idVaga
           this.candidato.cidade = this.candidato.cidade
           this.candidatos.push(this.candidato)
+
+          this.$axios
+            .post('main/candidato/', [
+              {
+                nome: this.candidato.nome,
+                email: this.candidato.email,
+                rg: this.candidato.rg,
+                cpf: this.candidato.cpf,
+                cidade: this.candidato.cidade.id,
+                vaga: this.candidato.vaga,
+              },
+            ])
+            .then(function (response) {
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+
           this.$toast.add({
             severity: 'success',
             summary: 'Successful',
             detail: 'Candidato Registrado',
-            life: 3000,
+            life: 5000,
           })
         }
         this.candidatoDialog = false
@@ -368,15 +419,28 @@ export default {
       this.candidato = candidato
       this.deleteCandidatoDialog = true
     },
-    deleteCandidato() {
-      this.candidatos = this.candidatos.filter((val) => val.id !== this.candidato.id)
+    deleteCandidato(id) {
+      console.log('ID: ' + id)
+      this.candidatos = this.candidatos.filter(
+        (val) => val.id !== this.candidato.id
+      )
       this.deleteCandidatoDialog = false
       this.candidato = {}
+
+      this.$axios
+        .delete('main/candidato/' + id + '/')
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+
       this.$toast.add({
         severity: 'success',
         summary: 'Successful',
         detail: 'Candidato Deletado',
-        life: 3000,
+        life: 5000,
       })
     },
     findIndexById(id) {
@@ -400,6 +464,18 @@ export default {
       this.candidatos = this.candidatos.filter(
         (val) => !this.selectedCandidatos.includes(val)
       )
+
+      for (const key in this.selectedCandidatos) {
+        console.log(this.selectedCandidatos[key])
+        this.$axios
+          .delete('main/candidato/' + this.selectedCandidatos[key].id + '/')
+          .then(function (response) {
+            console.log(response)
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+      }
       this.deleteCandidatosDialog = false
       this.selectedCandidatos = null
       this.$toast.add({
@@ -408,6 +484,43 @@ export default {
         detail: 'Candidatos Deletado',
         life: 3000,
       })
+    },
+    initFilters() {
+      this.filters = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      }
+    },
+    myUploader(event) {
+      const fileEvent = event.files[0];
+
+      const fileZiseMb = fileEvent.size / 1024 / 1024;
+      if (fileZiseMb > 4.5) {
+        const options = {
+          maxSizeMB: 4,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
+        try {
+          const compressedFile = imageCompression(
+            fileEvent,
+            options
+          );
+          console.log(
+            "compressedFile instanceof Blob",
+            compressedFile instanceof Blob
+          );
+          console.log(
+            `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
+          );
+          this.fileCSV = compressedFile;
+        } catch (error) {
+          console.log(error);
+          this.$toast.add({severity:'error', summary: 'Erro ao Compactar Img!', life: 3500});;
+        }
+      } else {
+        //FILE DOESN'T NEED TO BE COMPRESSED
+        this.fileCSV = fileEvent;
+      }
     },
   },
 }
