@@ -3,4 +3,4 @@ from .models import User
 
 @admin.register(User)
 class detUsuario(admin.ModelAdmin):
-    list_display = ('nome', 'edv', 'email', 'password', 'foto')
+    list_display = ('nome', 'edv', 'email', 'password')

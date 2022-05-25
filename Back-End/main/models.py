@@ -1,22 +1,18 @@
 import datetime
 from enum import auto
 from platform import release
-
 import jsonfield
 from django.db import models
 from users.models import User
 from uuid import uuid4
 from cpf_field.models import CPFField
 
-
 class Curso(models.Model):
     titulo = models.CharField(max_length=255, blank=False)
     descricao = models.TextField(blank=True)
     periodo = models.CharField(max_length=255, blank=True)
     carga_horaria = models.IntegerField(blank=True, null=True)
-
-    # imgCurso = models.ImageField(upload_to='cursos/', blank=True, null=True, default='')
-
+    imgCurso = models.TextField(default='None')
 
     def __str__(self):
         return self.titulo
@@ -57,6 +53,7 @@ class Candidato(models.Model):
     cpf = CPFField('Cpf', blank=True)
     cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)
+    foto = models.TextField(default='None')
 
     def __str__(self):
         return self.nome

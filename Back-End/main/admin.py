@@ -1,30 +1,30 @@
 from django.contrib import admin
 from .models import *
 
-# class detCurso(admin.ModelAdmin):
-#     list_display = ('id','titulo', 'descricao','data_inicio', 'data_termino')
-#     list_display_links = ('id',)
-#     search_fields = ('titulo',)
-#
-# class detStatusVaga(admin.ModelAdmin):
-#     list_display = ('id','status')
-#     list_display_links = ('id',)
-#     search_fields = ('status',)
-#
-# class detCidade(admin.ModelAdmin):
-#     list_display = ('id','nome')
-#     list_display_links = ('id',)
-#     search_fields = ('nome',)
-#
-# class detDinamica(admin.ModelAdmin):
-#     list_display = ('id','titulo', 'descicao','duracao')
-#     list_display_links = ('id',)
-#     search_fields = ('titulo',)
-#
-# class detCandidato(admin.ModelAdmin):
-#     list_display = ('id','nome', 'email','rg', 'cpf','cidade')
-#     list_display_links = ('id',)
-#     search_fields = ('nome',)
+class detCurso(admin.ModelAdmin):
+    list_display = ('id','titulo', 'descricao','periodo', 'carga_horaria', 'imgCurso')
+    list_display_links = ('id',)
+    search_fields = ('titulo',)
+
+class detStatusVaga(admin.ModelAdmin):
+    list_display = ('id','status')
+    list_display_links = ('id',)
+    search_fields = ('status',)
+
+class detCidade(admin.ModelAdmin):
+    list_display = ('id','nome')
+    list_display_links = ('id',)
+    search_fields = ('nome',)
+
+class detDinamica(admin.ModelAdmin):
+    list_display = ('id','titulo', 'descicao','duracao')
+    list_display_links = ('id',)
+    search_fields = ('titulo',)
+
+class detCandidato(admin.ModelAdmin):
+    list_display = ('id','nome', 'email','rg', 'cpf','cidade', 'vaga', 'foto')
+    list_display_links = ('id',)
+    search_fields = ('nome',)
 
 admin.site.register(Curso)
 admin.site.register(StatusVaga)
