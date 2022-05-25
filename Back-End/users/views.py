@@ -28,8 +28,6 @@ class signUp(APIView):
 
             else:
                 serializer = UserSerializer(data=request.data)
-                print(request.data)
-                print(serializer)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 return Response(serializer.data)
