@@ -16,7 +16,7 @@
               icon="pi pi-trash"
               class="p-button-danger"
               @click="confirmDeleteSelected"
-              :disabled="!selectedCandidatos || !selectedCandidatos.length"
+              :disabled="!selectedDinamicas || !selectedDinamicas.length"
             />
           </template>
 
@@ -42,22 +42,26 @@
 
         <DataTable
           ref="dt"
-          :value="candidatos"
-          :selection.sync="selectedCandidatos"
+          :value="Dinamicas"
+          :selection.sync="selectedDinamicas"
           dataKey="id"
           :paginator="true"
           :rows="5"
           :filters="filters"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          :rowsPerPageOptions="[5, 10, 15]"
-          currentPageReportTemplate="Pagina {first} de {last} de total de {totalRecords} candidatos"
+          :rowsPerPageOptions="[3, 5, 10]"
+          currentPageReportTemplate="Pagina {first} de {last} de total de {totalRecords} Dinamicas"
           responsiveLayout="scroll"
         >
           <template #header>
             <div
-              class="table-header flex flex-column md:flex-row md:justiify-content-between"
+              class="
+                table-header
+                flex flex-column
+                md:flex-row md:justiify-content-between
+              "
             >
-              <h2 class="mb-2 md:m-0 p-as-md-center">Gerenciar Candidatos</h2>
+              <h2 class="mb-2 md:m-0 p-as-md-center">Gerenciar Dinamicas</h2>
               <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText
@@ -74,67 +78,35 @@
             :exportable="false"
           ></Column>
           <Column
-            field="nome"
-            header="Nome"
+            field="titulo"
+            header="Titulo"
             :sortable="true"
             style="min-width: 16rem"
           ></Column>
-          <Column header="Image">
-            <template #body="slotProps">
-              <img
-                src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
-                :alt="slotProps.data.image"
-                class="product-image"
-              />
-            </template>
-          </Column>
           <Column
-            field="email"
-            header="Email"
+            field="duracao"
+            header="Duração"
             :sortable="true"
             style="min-width: 8rem"
           >
-            <!-- <template #body="slotProps">
-              {{ formatCurrency(slotProps.data.email) }}
-            </template> -->
           </Column>
           <Column
-            field="cpf"
-            header="CPF"
+            field="status"
+            header="Status"
             :sortable="true"
             style="min-width: 10rem"
           ></Column>
-          <Column
-            field="rg"
-            header="RG"
-            :sortable="true"
-            style="min-width: 10rem"
-          ></Column>
-          <!-- <Column
-            field="rating"
-            header="Reviews"
-            :sortable="true"
-            style="min-width: 12rem"
-          >
-            <template #body="slotProps">
-              <Rating
-                :modelValue="slotProps.data.rating"
-                :readonly="true"
-                :cancel="false"
-              />
-            </template>
-          </Column> -->
           <Column :exportable="false" style="min-width: 8rem">
             <template #body="slotProps">
               <Button
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success mr-2"
-                @click="editCandidato(slotProps.data)"
+                @click="editDinamica(slotProps.data)"
               />
               <Button
                 icon="pi pi-trash"
                 class="p-button-rounded p-button-warning"
-                @click="confirmDeleteCandidato(slotProps.data)"
+                @click="confirmDeleteDinamica(slotProps.data)"
               />
             </template>
           </Column>
@@ -142,57 +114,46 @@
       </div>
 
       <Dialog
-        :visible.sync="candidatoDialog"
+        :visible.sync="DinamicaDialog"
         :style="{ width: '450px' }"
         header="Product Details"
         :modal="true"
         class="p-fluid"
       >
-        <img
-          src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png"
-          :alt="candidato.image"
-          class="product-image"
-          v-if="candidato.image"
-        />
         <div class="field">
-          <label for="nome">Nome</label>
+          <label for="titulo">Titulo</label>
           <InputText
-            id="nome"
-            v-model="candidato.nome"
+            id="titulo"
+            v-model="Dinamica.titulo"
             required="true"
             autofocus
-            :class="{ 'p-invalid': submitted && !candidato.nome }"
+            :class="{ 'p-invalid': submitted && !Dinamica.titulo }"
           />
-          <small class="p-error" v-if="submitted && !candidato.nome"
-            >Nome é obrigatorio.</small
+          <small class="p-error" v-if="submitted && !Dinamica.titulo"
+            >Titulo é obrigatorio.</small
           >
         </div>
         <div class="field">
-          <label for="email">Email</label>
-          <InputText id="email" v-model="candidato.email" required="true" />
+          <label for="duracao">Duração</label>
+          <InputText id="duracao" v-model="Dinamica.duracao" required="true" />
         </div>
 
         <div class="field">
-          <label for="rg">RG</label>
-          <InputText id="rg" v-model="candidato.rg" required="true" />
+          <label for="status">status</label>
+          <InputText id="status" v-model="Dinamica.status" required="true" />
         </div>
-
-        <div class="field">
-          <label for="cpf">CPF</label>
-          <InputText id="cpf" v-model="candidato.cpf" required="true" />
-        </div>
-
+        <!-- 
         <div class="field">
           <label for="cidade" class="mb-3">Cidade</label>
           <Dropdown
             id="inventoryStatus"
-            v-model="candidato.cidade"
+            v-model="Dinamica.cidade"
             :options="cidades"
-            optionLabel="nome"
+            optionLabel="titulo"
             placeholder="Selecione uma cidade"
           >
           </Dropdown>
-        </div>
+        </div> -->
 
         <template #footer>
           <Button
@@ -205,22 +166,22 @@
             label="Save"
             icon="pi pi-check"
             class="p-button-text"
-            @click="saveCandidato"
+            @click="saveDinamica"
           />
         </template>
       </Dialog>
 
       <Dialog
-        :visible.sync="deleteCandidatoDialog"
+        :visible.sync="deleteDinamicaDialog"
         :style="{ width: '450px' }"
         header="Confirm"
         :modal="true"
       >
         <div class="confirmation-content">
           <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-          <span v-if="candidato"
-            >Tem certeza que deseja deletar este candidato
-            <b>{{ candidato.nome }}</b
+          <span v-if="Dinamica"
+            >Tem certeza que deseja deletar esta Dinamica
+            <b>{{ Dinamica.titulo }}</b
             >?</span
           >
         </div>
@@ -229,27 +190,27 @@
             label="No"
             icon="pi pi-times"
             class="p-button-text"
-            @click="deleteCandidatoDialog = false"
+            @click="deleteDinamicaDialog = false"
           />
           <Button
             label="Yes"
             icon="pi pi-check"
             class="p-button-text"
-            @click="deleteCandidato(candidato.id)"
+            @click="deleteDinamica(Dinamica.id)"
           />
         </template>
       </Dialog>
 
       <Dialog
-        :visible.sync="deleteCandidatosDialog"
+        :visible.sync="deleteDinamicasDialog"
         :style="{ width: '450px' }"
         header="Confirm"
         :modal="true"
       >
         <div class="confirmation-content">
           <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-          <span v-if="candidato"
-            >Tem certeza que deseja deletar o candidato selecionado?</span
+          <span v-if="Dinamica"
+            >Tem certeza que deseja deletar a dinâmica selecionada?</span
           >
         </div>
         <template #footer>
@@ -257,13 +218,13 @@
             label="No"
             icon="pi pi-times"
             class="p-button-text"
-            @click="deleteCandidatosDialog = false"
+            @click="deleteDinamicasDialog = false"
           />
           <Button
             label="Yes"
             icon="pi pi-check"
             class="p-button-text"
-            @click="deleteSelectedCandidatos"
+            @click="deleteSelectedDinamicas"
           />
         </template>
       </Dialog>
@@ -275,7 +236,7 @@
 <script>
 import { mapState } from 'vuex'
 import { FilterMatchMode } from 'primevue/api'
-import imageCompression from "browser-image-compression";
+import imageCompression from 'browser-image-compression'
 
 export default {
   layout: 'default',
@@ -283,18 +244,17 @@ export default {
     return {
       auth: false,
       user: '',
-      candidatos: [],
-      candidatoDialog: false,
-      deleteCandidatoDialog: false,
-      deleteCandidatosDialog: false,
-      candidato: {},
+      Dinamicas: [],
+      DinamicaDialog: false,
+      deleteDinamicaDialog: false,
+      deleteDinamicasDialog: false,
+      Dinamica: {},
       filters: {},
-      bool_editCandidato: false,
-      selectedCandidatos: null,
+      bool_editDinamica: false,
+      selectedDinamicas: null,
       submitted: false,
       fileCSV: null,
       idVaga: 0,
-      cidades: [],
     }
   },
   async mounted() {
@@ -302,18 +262,21 @@ export default {
       this.auth = auth
     })
     this.idVaga = this.$route.fullPath.replace(/^\D+/g, '')
+    // console.log(this.$route.params.slug)
+    console.log(this.idVaga)
 
     this.user = this.$store.state.user_session
 
-    this.$axios.$get('main/candidato/' + this.idVaga).then((response) => {
-      this.candidatos = response
-      console.log("Candidatos retorno api")
-      console.log(this.candidatos)
-    })
+    this.$axios.$get('main/vagaDinamica/' + this.idVaga).then((response) => {
+      const dinamicas = response.dinamica
 
-    this.$axios.$get('main/cidade/').then((response) => {
-      this.cidades = response
-      console.log(response)
+      for (const key in dinamicas) {
+
+        this.Dinamicas.push(dinamicas[key])
+      }
+      // console.log('teste: ')
+      // console.log(this.Dinamicas.entries())
+      // console.log(response)
     })
   },
   created() {
@@ -326,40 +289,31 @@ export default {
   },
   computed: {},
   methods: {
-    formatCurrency(value) {
-      if (value)
-        return value.toLocaleString('en-US', {
-          style: 'currency',
-          currency: 'USD',
-        })
-      return
-    },
     openNew() {
       console.log('open')
-      this.candidato = {}
+      this.Dinamica = {}
       this.submitted = false
-      this.candidatoDialog = true
+      this.DinamicaDialog = true
     },
     hideDialog() {
-      this.candidatoDialog = false
+      this.DinamicaDialog = false
       this.submitted = false
       this.bool_editProduct = false
     },
-    saveCandidato() {
+    saveDinamica() {
       this.submitted = true
-      console.log(this.candidatos)
-      if (this.candidato.nome) {
-        if (this.bool_editCandidato) {
-          this.candidatos[this.findIndexById(this.candidato.id)] =
-            this.candidato
+      console.log(this.Dinamicas)
+      if (this.Dinamica.titulo) {
+        if (this.bool_editDinamica) {
+          this.Dinamicas[this.findIndexById(this.Dinamica.id)] = this.Dinamica
 
           this.$axios
-            .put('main/candidato/' + this.candidato.id + '/', {
-              nome: this.candidato.nome,
-              email: this.candidato.email,
-              rg: this.candidato.rg,
-              cpf: this.candidato.cpf,
-              cidade: this.candidato.cidade.id,
+            .put('main/Dinamica/' + this.Dinamica.id + '/', {
+              titulo: this.Dinamica.titulo,
+              duracao: this.Dinamica.duracao,
+              rg: this.Dinamica.rg,
+              status: this.Dinamica.status,
+              cidade: this.Dinamica.cidade.id,
               vaga: this.idVaga,
             })
             .then(function (response) {
@@ -372,24 +326,24 @@ export default {
           this.$toast.add({
             severity: 'success',
             summary: 'Successful',
-            detail: 'Candidato Atualizado',
+            detail: 'Dinamica Atualizado',
             life: 5000,
           })
         } else {
-          this.candidato.image = 'products-placeholder.svg'
-          this.candidato.vaga = this.idVaga
-          this.candidato.cidade = this.candidato.cidade
-          this.candidatos.push(this.candidato)
+          this.Dinamica.image = 'products-placeholder.svg'
+          this.Dinamica.vaga = this.idVaga
+          this.Dinamica.cidade = this.Dinamica.cidade
+          this.Dinamicas.push(this.Dinamica)
 
           this.$axios
-            .post('main/candidato/', [
+            .post('main/Dinamica/', [
               {
-                nome: this.candidato.nome,
-                email: this.candidato.email,
-                rg: this.candidato.rg,
-                cpf: this.candidato.cpf,
-                cidade: this.candidato.cidade.id,
-                vaga: this.candidato.vaga,
+                titulo: this.Dinamica.titulo,
+                duracao: this.Dinamica.duracao,
+                rg: this.Dinamica.rg,
+                status: this.Dinamica.status,
+                cidade: this.Dinamica.cidade.id,
+                vaga: this.Dinamica.vaga,
               },
             ])
             .then(function (response) {
@@ -402,33 +356,33 @@ export default {
           this.$toast.add({
             severity: 'success',
             summary: 'Successful',
-            detail: 'Candidato Registrado',
+            detail: 'Dinamica Registrado',
             life: 5000,
           })
         }
-        this.candidatoDialog = false
-        this.candidato = {}
+        this.DinamicaDialog = false
+        this.Dinamica = {}
       }
     },
-    editCandidato(candidato) {
-      this.candidato = { ...candidato }
-      this.candidatoDialog = true
-      this.bool_editCandidato = true
+    editDinamica(Dinamica) {
+      this.Dinamica = { ...Dinamica }
+      this.DinamicaDialog = true
+      this.bool_editDinamica = true
     },
-    confirmDeleteCandidato(candidato) {
-      this.candidato = candidato
-      this.deleteCandidatoDialog = true
+    confirmDeleteDinamica(Dinamica) {
+      this.Dinamica = Dinamica
+      this.deleteDinamicaDialog = true
     },
-    deleteCandidato(id) {
+    deleteDinamica(id) {
       console.log('ID: ' + id)
-      this.candidatos = this.candidatos.filter(
-        (val) => val.id !== this.candidato.id
+      this.Dinamicas = this.Dinamicas.filter(
+        (val) => val.id !== this.Dinamica.id
       )
-      this.deleteCandidatoDialog = false
-      this.candidato = {}
+      this.deleteDinamicaDialog = false
+      this.Dinamica = {}
 
       this.$axios
-        .delete('main/candidato/' + id + '/')
+        .delete('main/Dinamica/' + id + '/')
         .then(function (response) {
           console.log(response)
         })
@@ -439,14 +393,14 @@ export default {
       this.$toast.add({
         severity: 'success',
         summary: 'Successful',
-        detail: 'Candidato Deletado',
+        detail: 'Dinamica Deletado',
         life: 5000,
       })
     },
     findIndexById(id) {
       let index = -1
-      for (let i = 0; i < this.candidatos.length; i++) {
-        if (this.candidatos[i].id === id) {
+      for (let i = 0; i < this.Dinamicas.length; i++) {
+        if (this.Dinamicas[i].id === id) {
           index = i
           break
         }
@@ -458,17 +412,17 @@ export default {
       this.$refs.dt.exportCSV()
     },
     confirmDeleteSelected() {
-      this.deleteCandidatosDialog = true
+      this.deleteDinamicasDialog = true
     },
-    deleteSelectedCandidatos() {
-      this.candidatos = this.candidatos.filter(
-        (val) => !this.selectedCandidatos.includes(val)
+    deleteSelectedDinamicas() {
+      this.Dinamicas = this.Dinamicas.filter(
+        (val) => !this.selectedDinamicas.includes(val)
       )
 
-      for (const key in this.selectedCandidatos) {
-        console.log(this.selectedCandidatos[key])
+      for (const key in this.selectedDinamicas) {
+        console.log(this.selectedDinamicas[key])
         this.$axios
-          .delete('main/candidato/' + this.selectedCandidatos[key].id + '/')
+          .delete('main/Dinamica/' + this.selectedDinamicas[key].id + '/')
           .then(function (response) {
             console.log(response)
           })
@@ -476,12 +430,12 @@ export default {
             console.log(error)
           })
       }
-      this.deleteCandidatosDialog = false
-      this.selectedCandidatos = null
+      this.deleteDinamicasDialog = false
+      this.selectedDinamicas = null
       this.$toast.add({
         severity: 'success',
         summary: 'Successful',
-        detail: 'Candidatos Deletado',
+        detail: 'Dinamicas Deletado',
         life: 3000,
       })
     },
@@ -491,35 +445,36 @@ export default {
       }
     },
     myUploader(event) {
-      const fileEvent = event.files[0];
+      const fileEvent = event.files[0]
 
-      const fileZiseMb = fileEvent.size / 1024 / 1024;
+      const fileZiseMb = fileEvent.size / 1024 / 1024
       if (fileZiseMb > 4.5) {
         const options = {
           maxSizeMB: 4,
           maxWidthOrHeight: 1920,
           useWebWorker: true,
-        };
+        }
         try {
-          const compressedFile = imageCompression(
-            fileEvent,
-            options
-          );
+          const compressedFile = imageCompression(fileEvent, options)
           console.log(
-            "compressedFile instanceof Blob",
+            'compressedFile instanceof Blob',
             compressedFile instanceof Blob
-          );
+          )
           console.log(
             `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
-          );
-          this.fileCSV = compressedFile;
+          )
+          this.fileCSV = compressedFile
         } catch (error) {
-          console.log(error);
-          this.$toast.add({severity:'error', summary: 'Erro ao Compactar Img!', life: 3500});;
+          console.log(error)
+          this.$toast.add({
+            severity: 'error',
+            summary: 'Erro ao Compactar Img!',
+            life: 3500,
+          })
         }
       } else {
         //FILE DOESN'T NEED TO BE COMPRESSED
-        this.fileCSV = fileEvent;
+        this.fileCSV = fileEvent
       }
     },
   },

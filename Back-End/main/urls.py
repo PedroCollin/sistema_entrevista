@@ -28,4 +28,7 @@ urlpatterns = [
 
     path('entrevista/', Entrevista_API.as_view()),
     path('entrevista/<int:pk>/', Entrevista_API.as_view()),
+
+    path('cidade/', Cidade_API.as_view()),
+    path('cidade/<int:pk>/', Cidade_API.as_view()),
 ]

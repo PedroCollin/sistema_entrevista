@@ -14,4 +14,8 @@ export default {}
 ::-webkit-scrollbar {
   display: none;
 }
+
+html{
+  width: 100%;
+}
 </style>

@@ -448,3 +448,15 @@ class Entrevista_API(APIView):
         entrevista = Entrevista.objects.get(id=pk)
         entrevista.delete()
         return Response({"msg": "Apagado com sucesso"})
+
+
+class Cidade_API(APIView):
+    def get(self, request, pk=''):
+        if pk == '':
+            _cidade = Cidade.objects.all()
+            serializer = CidadeSerializer(_cidade, many=True)
+            return Response(serializer.data)
+        else:
+            _cidade = Cidade.objects.filter(vaga=pk)
+            serializer = CidadeSerializer(_cidade, many=True)
+            return Response(serializer.data)

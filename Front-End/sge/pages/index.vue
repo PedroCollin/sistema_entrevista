@@ -103,7 +103,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 
 .product-item .product-item-content {
   border: 1px solid var(--surface-border);

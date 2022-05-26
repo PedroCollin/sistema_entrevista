@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "browser-image-compression": "^2.0.0",
     "core-js": "^3.19.3",
     "mitt": "^3.0.0",
     "nuxt": "^2.15.8",

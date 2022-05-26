@@ -15,7 +15,8 @@
                     <h3>Cadastros</h3><br>
                     <a href="../../auth/register" class="py-5 px-3">Cadastrar Usuário</a><br><br><br>
                     <a href="../../curso" class="py-5 px-3">Cadastrar Curso</a><br><br><br>
-                    <a href="../../dinamica" class="py-5 px-3">Cadastrar Dinâmica</a><br><br><br><br>
+                    <a href="../../dinamica" class="py-5 px-3">Cadastrar Dinâmica</a><br><br><br>
+                    <a href="../../vaga/" class="py-5 px-3">Cadastrar Vaga</a><br><br><br><br>
                     <h3>Informações / Dúvidas</h3><br>
                     <a href="../../sobre" class="py-5 px-3">Sobre o Sistema</a><br><br><br><br><br><br><br><br><br><br><br><br>
                     <a href="../../auth/login" class="py-5 px-3" @click="logout">SAIR</a>
@@ -63,6 +64,7 @@ export default {
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
 
 .py-5.px-3, .py-5.px-3:hover, .py-5.px-3:focus, .py-5.px-3:active, .py-5.px-3:hover img {
     text-decoration: none;

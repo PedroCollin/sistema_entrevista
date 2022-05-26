@@ -49,7 +49,7 @@ class Vaga(models.Model):
 class Candidato(models.Model):
     nome = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
-    rg = models.CharField(max_length=10)
+    rg = models.CharField(max_length=13)
     cpf = CPFField('Cpf', blank=True)
     cidade = models.ForeignKey(Cidade, on_delete=models.CASCADE)
     vaga = models.ForeignKey(Vaga, on_delete=models.CASCADE)

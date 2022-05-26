@@ -552,14 +552,6 @@ export default {
   }
 }
 
-@media screen and (max-width: 1900px) {
-  .p-picklist {
-    display: flex;
-    background-color: #2e5fe7;
-    flex-direction: column;
-  }
-}
-
 @media screen and (max-width: 1100px) {
   .painel-image {
     /* width: 100%;
